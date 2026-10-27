@@ -1,0 +1,54 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#101b2b"><meta name="description" content="CANALLA.EXE — уровень 4: Четыре лапы, одна клавиатура. Паттерн Command."><title>CANALLA.EXE | 04 — Четыре лапы, одна клавиатура</title><link rel="stylesheet" href="./challenge.css"></head><body><script src="./challenge-engine.js"></script><script>const config={"num":4,"next":true,"topic":"COMMAND PATTERN / DISPATCH","title":"<span>Четыре лапы.</span> Одна клавиатура.","description":"Крис подключил горячие клавиши к умному дому и отошёл от компьютера. Каналья заметила, что клавиатура способна управлять кормушкой. Твоя задача — реализовать диспетчер команд, а не набор специальных случаев.","scene":"keyboard","sceneTitle":"КЛАВИАТУРА КРИСА","sceneAlt":"Пиксельная кухня: чёрная Каналья на клавиатуре, CRT-монитор и автоматическая кормушка.","objectives":[["Оставить компьютер без присмотра","Крис ненадолго отошёл. Система горячих клавиш активна."],["Проверить четыре лапы","Каналья готова нажать несколько клавиш одновременно."],["Выполнить команды без ошибок","Система должна выдать корм и не сломать другие комбинации. Все 14 проверок зелёные."]],"actions":["01 · КРИС ОТОШЁЛ","02 · ЧЕТЫРЕ ЛАПЫ"],"snapshot":["Keyboard: locked / Feeder: hungry","Keyboard: active / Feeder: hungry","Event: CTRL + ALT + F / Dispatch: pending","Feeder: +1 meal / Keyboard: intact"],"phase":["WAITING FOR CHRIS","KEYBOARD ENABLED","SHORTCUT PENDING","FOOD DISPENSED"],"sceneMessages":["Крис: «Только не трогай клавиатуру!» Каналья удивлена, что это произносится всерьёз.","Крис вышел. Сочетания клавиш доступны.","Четыре лапы готовы. Диспетчер пока не понимает, какое действие вызвать.","Кормушка выдала порцию, другие команды работают. Каналья считает эксперимент завершённым."],"tree":["ShortcutManager\n└─ bindings: [CTRL+ALT+F → FeedCommand, ...]\nCanalla\n└─ paws: 4","ShortcutManager\n└─ active: true\nCanalla\n└─ keyboard: accessible","ShortcutManager\n├─ input: CTRL+ALT+F\n└─ dispatch: ?\nFeedCommand\n└─ execute(context)","ShortcutManager\n├─ dispatch: SUCCESS\n├─ FeedCommand.execute(context): 1 call\n└─ unrelated shortcuts: intact"],"file":"ShortcutManager.js ●","editorIntro":"Меняй только тело <code>ShortcutManager.dispatch(event, context)</code>. Команды — объекты с единым методом <code>execute(context)</code>.","codeTop":"// class ShortcutManager {\n//   dispatch(event, context) {","codeBottom":"//   }\n// }","starter":"return false;","solution":"if (!event || event.repeat || typeof event.key !== \"string\") return false;\nconst key = event.key === \" \" ? \"SPACE\" : event.key.toUpperCase();\nif ([\"CONTROL\", \"ALT\", \"SHIFT\", \"META\"].includes(key)) return false;\nconst parts = [];\nif (event.ctrlKey) parts.push(\"CTRL\");\nif (event.altKey) parts.push(\"ALT\");\nif (event.shiftKey) parts.push(\"SHIFT\");\nif (event.metaKey) parts.push(\"META\");\nparts.push(key);\nconst command = this.bindings.get(parts.join(\"+\"));\nif (!command || typeof command.execute !== \"function\") return false;\ntry {\n  const done = command.execute(context) === true;\n  if (done && typeof event.preventDefault === \"function\") event.preventDefault();\n  return done;\n} catch {\n  return false;\n}","api":["У менеджера есть <code>this.bindings</code>: <code>Map</code>, где ключи — нормализованные строки вроде <code>\"CTRL+ALT+F\"</code>, а значения — объекты-команды.","Порядок модификаторов фиксирован: <code>CTRL</code>, <code>ALT</code>, <code>SHIFT</code>, <code>META</code>, затем основная клавиша. Буквы регистронезависимы; пробел обозначается <code>SPACE</code>.","<code>dispatch(event, context)</code> возвращает <code>true</code> только если подходящая команда успешно выполнена через <code>execute(context)</code>. Во всех остальных случаях — <code>false</code>.","<code>event</code> содержит <code>key, ctrlKey, altKey, shiftKey, metaKey, repeat</code> и <code>preventDefault()</code>. На успешном вызове надо предотвратить обычное действие браузера. При неизвестной комбинации — не надо.","Автоповтор клавиши игнорируется. Бросающая ошибку, невалидная или отказавшая команда не должна разрушать работу диспетчера."],"hints":["Клавиатурное сочетание — это ключ, а команда — объект. Не выбирай действие по имени клавиши: сначала выясни, как найти команду в Map.","Нормализуй комбинацию: модификаторы в правильном порядке, затем клавиша в верхнем регистре. Через один интерфейс execute(context) можно выполнить и кормушку, и свет, и сохранение.","Алгоритм: отсекай repeat и недопустимый key, собирай строку CTRL+ALT+..., ищи в this.bindings, проверяй наличие execute, вызывай ровно один раз. Если получено true — preventDefault() и true. Ошибки и неизвестные сочетания дают false.","Ниже готовый пример реализации. Можно вставить его, запустить 14 тестов и прочитать каждую проверку."],"testCount":14,"readyNote":"Каналья не признаёт случайных нажатий. Только автоматизацию.","actionLogs":["Chris has left the desk.","Canalla pressed four keys with four paws."],"hudBefore":"FEEDER: LOCKED","hudAfter":"FEEDER: UNLOCKED","winTitle":"Кормушка признала полномочия.","winDescription":"Сочетание клавиш распознано. Команда выполнилась через общий интерфейс. Крис подозревает, что кто-то поменял требования.","quote":"<b>Крис:</b> «Каналья! Что ты опять нажала?!»<br><b>Каналья:</b> «Человек явно не знал всех сочетаний клавиш. Печально. А называл себя программистом»."}; const workerLogic=function worker4(){
+"use strict";
+self.onmessage=e=>{
+const {id,code,action1,action2}=e.data,tests=[];
+function check(label,cond){let ok=false;try{ok=!!cond();}catch(_e){ok=false;}tests.push({label,ok});}
+try{
+ class Command{execute(context){return false;}}
+ class FeedCommand extends Command{execute(context){context.food++;return true;}}
+ class LightCommand extends Command{execute(context){context.lights++;return true;}}
+ class SaveCommand extends Command{execute(context){context.saved++;return true;}}
+ class ShortcutManager{
+  constructor(){this.bindings=new Map();}
+  bind(combo,command){this.bindings.set(combo,command);return this;}
+  dispatch(event,context){
+   // PLAYER_CODE
+   /*_CODE_*/
+  }
+ }
+ if(typeof code!=="string"||code.length>12000)throw Error("Код слишком длинный.");
+ const Manager=new Function("ShortcutManager",'return class PlayerShortcutManager extends ShortcutManager {dispatch(event, context) {'+code+'\n}}')(ShortcutManager);
+ function key(k,o={}){return {key:k,ctrlKey:!!o.ctrl,altKey:!!o.alt,shiftKey:!!o.shift,metaKey:!!o.meta,repeat:!!o.repeat,prevented:0,preventDefault(){this.prevented++;}};}
+ function mgr(){return new Manager().bind("CTRL+ALT+F",new FeedCommand()).bind("CTRL+F",new LightCommand()).bind("CTRL+ALT+SHIFT+F",new SaveCommand()).bind("SHIFT+META+S",new SaveCommand()).bind("CTRL+SPACE",new LightCommand());}
+ check("Крис оставил компьютер активным",()=>action1===true);
+ check("Каналья готова нажать сочетание четырьмя лапами",()=>action2===true);
+ const a=mgr(),ctx={food:0,lights:0,saved:0},feed=key("F",{ctrl:true,alt:true});
+ const first=a.dispatch(feed,ctx);
+ check("CTRL+ALT+F вызывает FeedCommand ровно один раз",()=>first===true&&ctx.food===1);
+ check("Обработанная комбинация вызывает preventDefault",()=>feed.prevented===1);
+ const lower=key("f",{ctrl:true,alt:true}),before=ctx.food;
+ check("Буквы регистронезависимы",()=>a.dispatch(lower,ctx)===true&&ctx.food===before+1);
+ const short=key("f",{ctrl:true}),was=ctx.food;
+ check("CTRL+F не конфликтует с CTRL+ALT+F",()=>a.dispatch(short,ctx)===true&&ctx.lights===1&&ctx.food===was);
+ const combo=key("F",{ctrl:true,alt:true,shift:true});
+ check("Модификаторы имеют фиксированный порядок",()=>a.dispatch(combo,ctx)===true&&ctx.saved===1);
+ const mac=key("s",{shift:true,meta:true});
+ check("META и SHIFT тоже поддерживаются",()=>a.dispatch(mac,ctx)===true&&ctx.saved===2);
+ const space=key(" ",{ctrl:true});
+ check("Пробел преобразуется в SPACE",()=>a.dispatch(space,ctx)===true&&ctx.lights===2);
+ const unknown=key("Z",{ctrl:true,alt:true}),beforeUnknown={...ctx};
+ check("Неизвестные сочетания не перехватываются",()=>a.dispatch(unknown,ctx)===false&&unknown.prevented===0&&ctx.food===beforeUnknown.food);
+ const repeat=key("F",{ctrl:true,alt:true,repeat:true}),prev=ctx.food;
+ check("Автоповтор не выдаёт вторую порцию",()=>a.dispatch(repeat,ctx)===false&&ctx.food===prev&&repeat.prevented===0);
+ const modifier=key("Control",{ctrl:true});
+ check("Одиночный модификатор не является командой",()=>a.dispatch(modifier,ctx)===false&&modifier.prevented===0);
+ class CustomCommand extends Command{execute(context){context.custom=(context.custom||0)+1;return true;}}
+ const mm=new Manager().bind("ALT+T",new CustomCommand()),cx={custom:0},kk=key("t",{alt:true});
+ check("Полиморфная команда вызывается через execute(context)",()=>mm.dispatch(kk,cx)===true&&cx.custom===1&&kk.prevented===1);
+ const no=new Manager().bind("CTRL+Q",{execute(){return false;}}).bind("ALT+Q",{}).bind("CTRL+E",{execute(){throw Error("denied")}}),noC={};
+ const q1=key("q",{ctrl:true}),q2=key("q",{alt:true}),q3=key("e",{ctrl:true});
+ check("Отказ, невалидная команда и ошибка безопасны",()=>no.dispatch(q1,noC)===false&&no.dispatch(q2,noC)===false&&no.dispatch(q3,noC)===false&&q1.prevented===0&&q2.prevented===0&&q3.prevented===0);
+ self.postMessage({id,tests});
+}catch(err){self.postMessage({id,tests:[],error:String(err&&err.message||err).slice(0,240)});}
+};
+}; window.CANALLA_CHALLENGE.init(config,workerLogic);</script></body></html>
