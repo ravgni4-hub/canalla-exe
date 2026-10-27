@@ -1,0 +1,56 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#101b2b"><meta name="description" content="CANALLA.EXE — уровень 5: Старший тестировщик. Паттерн Observer."><title>CANALLA.EXE | 05 — Старший тестировщик</title><link rel="stylesheet" href="./challenge.css"></head><body><script src="./challenge-engine.js"></script><script>const config={"num":5,"next":false,"topic":"OBSERVER PATTERN / EVENTS / QA","title":"<span>Старший тестировщик.</span> Умный дом не готов.","description":"Крис объявил умный дом полностью протестированным. Каналья не согласна: нужно отследить события дверей, замков и кормушки, выявить настоящую уязвимость и не устроить ложную тревогу.","scene":"home","sceneTitle":"SMART HOME / STRESS TEST","sceneAlt":"Пиксельный умный дом, чёрная Каналья рядом со шкафом и экраном диагностики.","objectives":[["Запустить контроль качества","Каналья получает доступ к системе событий."],["Провести стресс-тест","Эмулятор отправляет события в непредсказуемом порядке."],["Обнаружить уязвимость без шума","16 тестов подтверждают правильные уведомления, подписки и отписки."]],"actions":["01 · QA ONLINE","02 · СТРЕСС-ТЕСТ"],"snapshot":["EventBus: offline | QA subscriptions: 0","QA: ready | available event types: 6","Stress events: out-of-order | test harness: armed","Detected: unsecured-door | duplicate alarms: 0"],"phase":["QA OFFLINE","QA CONNECTED","STRESS TEST QUEUED","BUG FOUND"],"sceneMessages":["Крис: «Я всё протестировал». Каналья посмотрела на незапертую дверцу шкафа.","Каналья назначила себя старшим тестировщиком.","События дверей и замков могут приходить в любом порядке. Ложные тревоги неприемлемы.","Незакрытый шкаф обнаружен. Дюке отправился проверять. Каналья умывается."],"tree":["EventBus\n├─ door:opened / door:closed\n├─ lock:failed / lock:secured\n└─ bowl:empty / bowl:refilled\nCanallaQA\n└─ listeners: 0","EventBus\n└─ channels: 6\nCanallaQA\n└─ status: standby","EventBus\n├─ event order: unpredictable\n├─ duplicate messages: possible\n└─ listeners: required\nCanallaQA\n└─ alerts: pending","CanallaQA\n├─ subscriptions: 6\n├─ duplicate alerts: suppressed\n├─ stop(): no listeners\n└─ vulnerability: CONFIRMED"],"file":"CanallaQA.js ●","editorIntro":"Внутри класса <code>CanallaQA</code> реализуй конструктор, <code>start()</code> и <code>stop()</code>. Это уже полноценная мини-система Observer.","codeTop":"// class CanallaQA {","codeBottom":"// }","starter":"constructor(bus) {\n  this.bus = bus;\n  this.alerts = [];\n}\nstart() {\n  return false;\n}\nstop() {\n  return false;\n}","solution":"constructor(bus) {\n  this.bus = bus;\n  this.alerts = [];\n  this.unsubscribers = [];\n  this.active = false;\n  this.doors = new Map();\n  this.emptyBowls = new Set();\n}\nstart() {\n  if (this.active) return false;\n  this.active = true;\n  const door = id => {\n    if (!this.doors.has(id)) this.doors.set(id, {opened:false, failed:false, reported:false});\n    return this.doors.get(id);\n  };\n  const checkDoor = (id, state) => {\n    if (state.opened && state.failed && !state.reported) {\n      this.alerts.push({type:\"unsecured-door\", doorId:id});\n      state.reported = true;\n    }\n  };\n  this.unsubscribers = [\n    this.bus.on(\"door:opened\", e => {\n      const state = door(e.doorId);\n      state.opened = true;\n      checkDoor(e.doorId, state);\n    }),\n    this.bus.on(\"lock:failed\", e => {\n      const state = door(e.doorId);\n      state.failed = true;\n      checkDoor(e.doorId, state);\n    }),\n    this.bus.on(\"door:closed\", e => this.doors.delete(e.doorId)),\n    this.bus.on(\"lock:secured\", e => {\n      const state = door(e.doorId);\n      state.failed = false;\n      state.reported = false;\n    }),\n    this.bus.on(\"bowl:empty\", e => {\n      if (!this.emptyBowls.has(e.bowlId)) {\n        this.emptyBowls.add(e.bowlId);\n        this.alerts.push({type:\"empty-bowl\", bowlId:e.bowlId});\n      }\n    }),\n    this.bus.on(\"bowl:refilled\", e => this.emptyBowls.delete(e.bowlId))\n  ];\n  return true;\n}\nstop() {\n  if (!this.active) return false;\n  this.active = false;\n  this.unsubscribers.forEach(fn => fn());\n  this.unsubscribers = [];\n  return true;\n}","api":["<code>new CanallaQA(bus)</code> получает EventBus. Нужно иметь публичный массив <code>qa.alerts</code> с найденными проблемами.","<code>bus.on(type, handler)</code> подписывает обработчик и <strong>возвращает функцию отписки</strong>. Доступны 6 событий: <code>door:opened</code>, <code>door:closed</code>, <code>lock:failed</code>, <code>lock:secured</code>, <code>bowl:empty</code>, <code>bowl:refilled</code>.","Для дверей payload выглядит как <code>{doorId:\"kitchen\"}</code>, для мисок — <code>{bowlId:\"cat\"}</code>. Каждое событие имеет собственное имя и не обязано идти в привычном порядке.","Опасность: для <strong>одной и той же</strong> дверцы произошли <code>door:opened</code> и <code>lock:failed</code> (в любом порядке). Создай ровно одно <code>{type:\"unsecured-door\", doorId:id}</code> до следующего <code>door:closed</code> или <code>lock:secured</code>.","Событие <code>bowl:empty</code> создаёт <code>{type:\"empty-bowl\", bowlId:id}</code> один раз, пока не поступит <code>bowl:refilled</code>. Затем тревога может повториться.","<code>start()</code> при первой подписке возвращает <code>true</code>, повторная подписка — <code>false</code>. <code>stop()</code> отписывает все обработчики и возвращает <code>true</code>, если слушатель был активен. Повторный <code>stop()</code> — <code>false</code>. После остановки <code>start()</code> может снова запустить наблюдение."],"hints":["Observer — это не постоянный опрос состояния. EventBus сам сообщает об изменениях. Подумай, как подписываться, не подписываясь дважды.","Храни состояние для каждой двери отдельно: открыта ли, был ли сбой замка, отправлена ли тревога. Порядок событий не должен менять результат. Для миски достаточно помнить, что она уже пустая.","В start() подпишись на шесть событий и сохрани функции отписки. Для door:opened/lock:failed проверяй пару состояний. door:closed и lock:secured сбрасывают возможность новой тревоги; bowl:refilled снова разрешает сигнал о пустой миске. stop() вызывает все сохранённые функции.","Ниже один из рабочих вариантов системы Observer с состоянием дверей и мисок. Можно вставить его целиком, чтобы изучить работу 16 тестов."],"testCount":16,"readyNote":"Отдел тестирования существовал задолго до появления Криса.","actionLogs":["CanallaQA installed as lead tester.","Stress-test event sequence prepared."],"hudBefore":"TEST SUITE: IDLE","hudAfter":"ALERT: UNSECURED DOOR","winTitle":"Тестировщик обнаружил проблему.","winDescription":"Проверки зелёные. Уведомления приходят точно один раз, обработчики снимаются без утечек, а уязвимость обнаружена независимо от порядка событий.","quote":"<b>Крис:</b> «Но система прошла все наши тесты!»<br><b>Каналья:</b> «Наши? Я не припомню, чтобы меня приглашали в отдел QA»."};const workerLogic=function worker5(){
+"use strict";
+self.onmessage=e=>{
+ const {id,code,action1,action2}=e.data,tests=[];
+ function check(label,fn){let ok=false;try{ok=!!fn()}catch(_){ok=false}tests.push({label,ok});}
+ try{
+  class EventBus{
+   constructor(){this.m=new Map();}
+   on(type,fn){if(!this.m.has(type))this.m.set(type,new Set());this.m.get(type).add(fn);let active=true;return ()=>{if(active){active=false;this.m.get(type).delete(fn);}};}
+   emit(type,payload){for(const fn of [...(this.m.get(type)||[])])fn(payload);}
+   listenerCount(){return [...this.m.values()].reduce((n,set)=>n+set.size,0);}
+  }
+  if(typeof code!=="string"||code.length>12000)throw Error("Код слишком длинный.");
+  const QA=new Function("return class CanallaQA {\n"+code+"\n}")();
+  check("Каналья подключилась к QA умного дома",()=>action1===true);
+  check("Стресс-тест запущен",()=>action2===true);
+  const bus=new EventBus(),qa=new QA(bus);
+  check("Новый тестировщик не создаёт ложные тревоги",()=>Array.isArray(qa.alerts)&&qa.alerts.length===0);
+  let started=qa.start(),startAgain=qa.start();
+  check("Шесть подписок, start() идемпотентен",()=>started===true&&startAgain===false&&bus.listenerCount()===6);
+  bus.emit("door:opened",{doorId:"kitchen"});
+  check("Открытая дверца без сбоя — не тревога",()=>qa.alerts.length===0);
+  bus.emit("lock:failed",{doorId:"study"});
+  check("Сбой замка другой дверцы — не тревога",()=>qa.alerts.length===0);
+  bus.emit("lock:failed",{doorId:"kitchen"});
+  check("Открытие затем сбой вызывает ровно одну тревогу",()=>qa.alerts.length===1&&qa.alerts[0].type==="unsecured-door"&&qa.alerts[0].doorId==="kitchen");
+  bus.emit("door:opened",{doorId:"study"});
+  check("Сбой затем открытие тоже обнаруживается",()=>qa.alerts.length===2&&qa.alerts[1].doorId==="study");
+  bus.emit("lock:failed",{doorId:"kitchen"});
+  bus.emit("door:opened",{doorId:"kitchen"});
+  check("Повторные события не дублируют тревогу",()=>qa.alerts.length===2);
+  bus.emit("door:opened",{doorId:"hall"});
+  bus.emit("lock:failed",{doorId:"garage"});
+  check("События разных дверей не смешиваются",()=>qa.alerts.length===2);
+  bus.emit("door:closed",{doorId:"kitchen"});
+  bus.emit("door:opened",{doorId:"kitchen"});
+  bus.emit("lock:failed",{doorId:"kitchen"});
+  check("Закрытие дверцы сбрасывает тревожное состояние",()=>qa.alerts.length===3&&qa.alerts[2].doorId==="kitchen");
+  bus.emit("lock:secured",{doorId:"study"});
+  bus.emit("lock:failed",{doorId:"study"});
+  check("Успешная блокировка позволяет новую проверку",()=>qa.alerts.length===4&&qa.alerts[3].doorId==="study");
+  bus.emit("bowl:empty",{bowlId:"cat"});
+  bus.emit("bowl:empty",{bowlId:"cat"});
+  check("Пустая миска сообщает о проблеме один раз",()=>qa.alerts.length===5&&qa.alerts[4].type==="empty-bowl"&&qa.alerts[4].bowlId==="cat");
+  bus.emit("bowl:refilled",{bowlId:"cat"});
+  bus.emit("bowl:empty",{bowlId:"cat"});
+  check("После наполнения миски уведомление повторяется",()=>qa.alerts.length===6&&qa.alerts[5].type==="empty-bowl"&&qa.alerts[5].bowlId==="cat");
+  const stopped=qa.stop(),stoppedAgain=qa.stop(),n=qa.alerts.length;
+  bus.emit("bowl:empty",{bowlId:"duke"});
+  check("stop() удаляет слушателей и прекращает уведомления",()=>stopped===true&&stoppedAgain===false&&bus.listenerCount()===0&&qa.alerts.length===n);
+  const restart=qa.start();bus.emit("door:opened",{doorId:"attic"});bus.emit("lock:failed",{doorId:"attic"});
+  check("Повторный start() работает без дублирования подписок",()=>restart===true&&bus.listenerCount()===6&&qa.alerts.length===n+1&&qa.alerts[n].type==="unsecured-door"&&qa.alerts[n].doorId==="attic");
+  self.postMessage({id,tests});
+ }catch(err){self.postMessage({id,tests:[],error:String(err&&err.message||err).slice(0,240)});}
+};
+};window.CANALLA_CHALLENGE.init(config,workerLogic);</script></body></html>
