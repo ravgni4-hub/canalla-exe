@@ -8,14 +8,14 @@ function init(c,workerLogic){
  '<header class="top"><a class="logo" href="./index.html" aria-label="Главное меню"><span class="logoicon">C&gt;_</span><span><b>CANALLA<em>.EXE</em></b><small>OBJECT-ORIENTED CATASTROPHE</small></span></a><nav class="topnav"><a href="./index.html">← МЕНЮ</a><a href="./level'+(c.num-1)+'.html">LEVEL '+String(c.num-1).padStart(2,"0")+'</a>'+(c.next?'<a href="./level'+(c.num+1)+'.html">LEVEL '+String(c.num+1).padStart(2,"0")+' →</a>':'')+'</nav></header>'+
  '<section class="hero"><div class="eyebrow">LEVEL '+String(c.num).padStart(2,"0")+' / '+c.topic+'</div><h1>'+c.title+'</h1><p>'+c.description+'</p></section>'+
  '<main class="layout"><div class="stack">'+
- '<section class="panel"><div class="panelhead"><b>LIVE SCENE / '+c.sceneTitle+'</b><span class="minor" id="phase">READY</span></div><canvas id="scene" class="scene" width="900" height="470" role="img" aria-label="'+c.sceneAlt+'"></canvas><div class="scenestatus" id="scenestatus" aria-live="polite">'+c.sceneMessages[0]+'</div></section>'+
+ '<section class="panel"><div class="panelhead"><b>LIVE SCENE / '+c.sceneTitle+'</b><span class="minor" id="phase">READY</span></div><div class="buttons"><button class="btn primary" type="button" id="action1">'+c.actions[0]+'</button><button class="btn secondary" type="button" id="action2" disabled>'+c.actions[1]+'</button><button class="btn" type="button" id="restart">↺ СБРОС</button></div><canvas id="scene" class="scene" width="900" height="470" role="img" aria-label="'+c.sceneAlt+'"></canvas><div class="scenestatus" id="scenestatus" aria-live="polite">'+c.sceneMessages[0]+'</div></section>'+
  '<section class="panel"><div class="panelhead"><b>MISSION OBJECTIVES</b><span class="minor" id="score">0 / 3</span></div><div class="objectives">'+
  '<div class="objective" id="obj1"><span class="check">○</span><div><b>01. '+c.objectives[0][0]+'</b><p>'+c.objectives[0][1]+'</p></div></div>'+
  '<div class="objective" id="obj2"><span class="check">○</span><div><b>02. '+c.objectives[1][0]+'</b><p>'+c.objectives[1][1]+'</p></div></div>'+
  '<div class="objective" id="obj3"><span class="check">○</span><div><b>03. '+c.objectives[2][0]+'</b><p>'+c.objectives[2][1]+'</p></div></div>'+
- '</div><div class="buttons"><button class="btn primary" type="button" id="action1">'+c.actions[0]+'</button><button class="btn secondary" type="button" id="action2" disabled>'+c.actions[1]+'</button><button class="btn" type="button" id="restart">↺ СБРОС</button></div><div class="snapshot" id="snapshot">'+c.snapshot[0]+'</div></section></div>'+
- '<div class="stack"><section class="panel"><div class="panelhead"><b>CODE EDITOR</b><span class="minor">'+c.file+'</span></div><div class="intro"><span class="pill">JAVASCRIPT</span>'+c.editorIntro+'</div><div class="codebox"><div class="codewrap"><span class="comment">'+c.codeTop+'</span></div><textarea id="editor" class="editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Редактор JavaScript"></textarea><div class="codewrap"><span class="comment">'+c.codeBottom+'</span></div></div><details class="api"><summary>Публичный API и контракты — раскрыть</summary><ul>'+c.api.map(x=>'<li>'+x+'</li>').join("")+'</ul></details><div class="buttons"><button class="btn primary" type="button" id="run">▶ ЗАПУСТИТЬ ТЕСТЫ</button><button class="btn" type="button" id="hints">ПОДСКАЗКА · 0/4</button></div><div id="hint" class="hintbox" hidden role="status"></div></section>'+
- '<section class="panel"><div class="panelhead"><b>TEST RUNNER</b><span class="minor">'+c.testCount+' ASSERTIONS</span></div><div class="terminal" id="terminal" role="log" aria-live="polite"></div></section>'+
+ '</div><div class="snapshot" id="snapshot">'+c.snapshot[0]+'</div></section></div>'+
+ '<div class="stack"><section class="panel"><div class="panelhead"><b>ШАГ 03 · CODE EDITOR</b><span class="minor">'+c.file+'</span></div><div class="intro"><span class="pill">JAVASCRIPT</span>'+c.editorIntro+'</div><div class="codebox"><div class="codewrap"><span class="comment">'+c.codeTop+'</span></div><textarea id="editor" class="editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" aria-label="Редактор JavaScript"></textarea><div class="codewrap"><span class="comment">'+c.codeBottom+'</span></div></div><details class="api"><summary>Публичный API и контракты — раскрыть</summary><ul>'+c.api.map(x=>'<li>'+x+'</li>').join("")+'</ul></details><div class="buttons"><button class="btn primary" type="button" id="run" disabled title="Сначала выполни действия 01 и 02">▶ 04 · ЗАПУСТИТЬ ТЕСТЫ</button><button class="btn" type="button" id="hints">ПОДСКАЗКА · 0/4</button></div><div id="hint" class="hintbox" hidden role="status"></div></section>'+
+ '<section class="panel"><div class="panelhead"><b>ШАГ 04 · TEST RUNNER</b><span class="minor">'+c.testCount+' ASSERTIONS</span></div><div class="terminal" id="terminal" role="log" aria-live="polite"></div></section>'+
  '<section class="panel"><div class="panelhead"><b>OBJECT EXPLORER</b><span class="minor">LIVE MODEL</span></div><div class="explorer" id="tree"></div></section></div></main>'+
  '<footer class="foot"><span>© CANALLA GAMES • РЕТРО БИТ • BUILD 0.4</span><span>КОД ИГРОКА ВЫПОЛНЯЕТСЯ В ИЗОЛИРОВАННОЙ ПЕСОЧНИЦЕ</span></footer></div>'+
  '<div class="winlayer" id="win" hidden><section class="win" role="dialog" aria-modal="true" aria-labelledby="win-title"><div id="achievement" class="winlabel"></div><h2 id="win-title">'+c.winTitle+'</h2><p>'+c.winDescription+'</p><div class="quote">'+c.quote+'</div><div class="buttons"><button type="button" class="btn primary" id="replay">↺ СЫГРАТЬ ЕЩЁ</button><button type="button" class="btn" id="close">ПОСМОТРЕТЬ КОД</button><a class="btn" href="./index.html">← МЕНЮ</a>'+(c.next?'<a class="btn secondary" href="./level'+(c.num+1)+'.html">LEVEL '+String(c.num+1).padStart(2,"0")+' →</a>':'')+'</div></section></div>';
@@ -30,7 +30,7 @@ function init(c,workerLogic){
   byId("score").textContent=vals.filter(Boolean).length+" / 3";
   byId("action1").disabled=state.action1||state.busy;
   byId("action2").disabled=!state.action1||state.action2||state.busy;
-  byId("run").disabled=state.busy;
+  byId("run").disabled=state.busy||!state.action2;
   const idx=state.won?3:state.action2?2:state.action1?1:0;
   byId("phase").textContent=c.phase[idx];
   byId("scenestatus").textContent=c.sceneMessages[idx];
@@ -106,6 +106,7 @@ function init(c,workerLogic){
  }
  function run(){
   if(state.busy)return;
+  if(!state.action2){log("> Сначала выполни действия 01 и 02 в панели сцены.","warn");return;}
   if(!ready){log("> Песочница ещё загружается. Повтори запуск.","warn");return;}
   state.busy=true;state.won=false;status();clear();log("CANALLA QA / RUNNING","dim");log("> Проверяю контракты и поведение объектов...");
   pending=Date.now()+"-"+Math.random();deadline=setTimeout(()=>finish({error:"Проверка не ответила за 3,5 секунды.",tests:[]}),3500);
