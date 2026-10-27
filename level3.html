@@ -26,6 +26,7 @@
  <div class="stack">
   <section class="panel">
    <div class="panel-head"><strong>LIVE SCENE / ДОСТАВКА</strong><span class="meta" id="phase">UNBOXING LOCKED</span></div>
+   <div class="controls"><button type="button" class="btn primary" id="desk-btn">01 · ОСВОБОДИТЬ СТОЛ</button><button type="button" class="btn mint" id="inspect-btn" disabled>02 · ОСМОТРЕТЬ ЯЩИК</button><button type="button" class="btn push" id="restart-btn">↺ СБРОС</button></div>
    <canvas class="scene" id="scene" width="960" height="540" role="img" aria-label="Пиксельная сцена: большой ящик с компьютером, рабочий стол и чёрная кошка Каналья."></canvas>
    <div class="scene-status" id="scene-status" aria-live="polite">Крис: «Только не повреди компьютер и упаковку!»</div>
   </section>
@@ -36,13 +37,13 @@
     <div class="obj" id="goal-inspect"><span class="check">○</span><div><b>02. Осмотреть коробку</b><p>Узнай текущее состояние через публичный метод.</p></div></div>
     <div class="obj" id="goal-code"><span class="check">○</span><div><b>03. Оформить коробку на Каналью</b><p>Компьютер цел, упаковка цела, владелец изменился. Все 12 тестов зелёные.</p></div></div>
    </div>
-   <div class="controls"><button type="button" class="btn primary" id="desk-btn">01 · ОСВОБОДИТЬ СТОЛ</button><button type="button" class="btn mint" id="inspect-btn" disabled>02 · ОСМОТРЕТЬ ЯЩИК</button><button type="button" class="btn push" id="restart-btn">↺ СБРОС</button></div>
+
    <div class="snapshot" id="snapshot"><b>box.inspect()</b> → доступно после осмотра.</div>
   </section>
  </div>
  <div class="stack">
   <section class="panel">
-   <div class="panel-head"><strong>CODE EDITOR</strong><span class="meta">Canalla.js ●</span></div>
+   <div class="panel-head"><strong>ШАГ 03 · CODE EDITOR</strong><span class="meta">Canalla.js ●</span></div>
    <div class="editor-intro"><span class="pill">JAVASCRIPT</span>Изменяй только тело метода <code>claimBox()</code>. Приватные поля <code>#computer</code>, <code>#owner</code> и <code>#sealed</code> закрыты.</div>
    <div class="codebox">
     <div class="fixed-code"><em>// class Canalla extends Pet {</em>
@@ -60,11 +61,11 @@
      <p><code>desk.canReceiveComputer()</code> проверяет наличие места на столе. Не полагайся на это обещание безусловно: перемещение тоже может завершиться неудачей.</p>
      <p>Метод должен возвращать <code>true</code> при успехе, <code>false</code> при невозможности операции. Повторный вызов не должен переносить компьютер второй раз.</p>
    </details>
-   <div class="editor-actions"><button type="button" class="btn primary" id="run-btn">▶ ЗАПУСТИТЬ ТЕСТЫ</button><button type="button" class="btn" id="hint-btn">ПОДСКАЗКА · 0/4</button></div>
+   <div class="editor-actions"><button type="button" class="btn primary" id="run-btn" disabled title="Сначала освободи стол и осмотри ящик">▶ 04 · ЗАПУСТИТЬ ТЕСТЫ</button><button type="button" class="btn" id="hint-btn">ПОДСКАЗКА · 0/4</button></div>
    <div class="hint" id="hint" hidden role="status"></div>
   </section>
   <section class="panel">
-   <div class="panel-head"><strong>TEST RUNNER</strong><span class="meta">12 ASSERTIONS</span></div>
+   <div class="panel-head"><strong>ШАГ 04 · TEST RUNNER</strong><span class="meta">12 ASSERTIONS</span></div>
    <div class="terminal" id="terminal" role="log" aria-live="polite"><div class="line dim">CANALLA QA / READY</div><div class="line">&gt; Скрытые проверки появятся после первого запуска.</div></div>
   </section>
   <section class="panel">
@@ -100,7 +101,7 @@ const values=[state.desk,state.inspect,state.passed];
 byId("score").textContent=values.filter(Boolean).length+" / 3";
 byId("desk-btn").disabled=state.desk||state.busy;
 byId("inspect-btn").disabled=!state.desk||state.inspect||state.busy;
-byId("run-btn").disabled=state.busy;
+byId("run-btn").disabled=state.busy || !state.inspect;
 byId("phase").textContent=state.passed?"OWNER: CANALLA":state.inspect?"BOX INSPECTED":state.desk?"DESK: READY":"UNBOXING LOCKED";
 byId("scene-status").textContent=state.passed?"Крис получил целый компьютер. Каналья получила коробку. Контракт выполнен.":state.inspect?"Пломба цела, компьютер внутри, владелец — Крис. Действуй через API.":state.desk?"Стол свободен. Каналья изучает юридический статус коробки.":"Крис: «Только не повреди компьютер и упаковку!»";
 byId("tree").innerHTML='<span class="teal">ShippingBox</span> <span class="dim">// private state</span>\n'
@@ -235,6 +236,7 @@ function finish(data){
 }
 function runTests(){
  if(state.busy)return;
+ if(!state.inspect){line("> Сначала выполни действия 01 и 02: освободи стол и осмотри ящик.","warn");return;}
  if(!ready){line("> Исполнитель ещё загружается. Попробуй повторить запуск.","warn");return;}
  state.busy=true;state.passed=false;refresh();clearLog();line("CANALLA QA / RUNNING","dim");line("> Проверяю реальные состояния объектов...");
  pending=String(Date.now())+"-"+Math.random();
