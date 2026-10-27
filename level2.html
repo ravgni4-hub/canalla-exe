@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#121d2e">
+<meta name="description" content="CANALLA.EXE — уровень 02. Дюке, охраняй! Головоломка по наследованию и полиморфизму JavaScript.">
+<title>CANALLA.EXE | 02: Дюке, охраняй!</title>
+<style>
+:root{--bg:#111b2b;--panel:#1e2d40;--line:#3b4d60;--ink:#f0f5ed;--muted:#a1b4c6;--lime:#d7f17a;--mint:#7ad2bd;--gold:#f7c97b;--red:#ff98a2;--mono:ui-monospace,Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 18% 0%,#283b51,transparent 40%),var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}a{color:var(--mint)}button,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--mint);outline-offset:3px}code{font:0.92em var(--mono);color:var(--lime)}.shell{max-width:1420px;margin:auto;padding:0 24px}.top{min-height:78px;display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px}.mark{background:var(--lime);color:#142438;font:900 22px var(--mono);padding:10px 13px;box-shadow:4px 4px #354c4b}.brand b{font:900 24px var(--mono);letter-spacing:-1.2px}.brand b span{color:var(--lime)}.brand small{display:block;font:700 10px var(--mono);letter-spacing:1.4px;color:var(--muted)}.top a{text-decoration:none;border:1px solid var(--line);border-radius:6px;padding:9px 12px;font:700 12px var(--mono);white-space:nowrap}.hero{padding:26px 0 24px}.eyebrow{font:800 12px var(--mono);letter-spacing:1.4px;color:var(--mint)}h1{font-size:clamp(29px,4vw,50px);line-height:1.12;letter-spacing:-1.4px;margin:9px 0}h1 em{font-style:normal;color:var(--lime)}.hero p{max-width:870px;color:#b5c5d2;margin:0}.layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(340px,1fr);gap:16px;align-items:start}.stack{display:grid;gap:16px;min-width:0}.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0;box-shadow:0 8px 28px #0002}.panel-head{display:flex;justify-content:space-between;align-items:center;min-height:45px;padding:11px 17px;background:#1a293c;border-bottom:1px solid var(--line);gap:10px}.panel-head b{font:900 12px var(--mono);letter-spacing:.8px}.panel-head b::before{content:"■";color:var(--lime);margin-right:11px}.small{font:800 11px var(--mono);color:#9db8ca}canvas{display:block;width:100%;height:auto;image-rendering:pixelated;background:#accbc4}.scene-status{padding:11px 16px;min-height:43px;font:700 12px var(--mono);color:#c2d9cc}.objective{display:flex;align-items:flex-start;gap:13px;padding:13px 0;border-bottom:1px solid #394a5c}.objective:last-child{border:0}.objective-list{padding:2px 18px}.check{display:grid;place-items:center;width:28px;height:28px;border-radius:6px;border:1px solid #698097;color:#7c98af;flex-shrink:0;font:800 18px var(--mono)}.objective.done .check{background:var(--lime);color:#172537;border-color:var(--lime)}.objective strong{font:800 13px var(--mono)}.objective.done strong{color:var(--lime)}.objective p{margin:3px 0 0;color:#a3b9c8;font-size:13px}.controls{display:flex;gap:9px;flex-wrap:wrap;padding:13px 18px 17px}.btn{border:1px solid #4d6478;border-radius:6px;padding:12px 13px;font:800 12px var(--mono);background:transparent;color:#d6e6e6;min-height:44px}.btn.lime{background:var(--lime);color:#14253b;border-color:var(--lime)}.btn.mint{background:var(--mint);color:#14253b;border-color:var(--mint)}.btn:hover:not(:disabled){filter:brightness(1.09)}.push{margin-left:auto}.padded{padding:15px 17px}.intro{font-size:12px;color:#b9cbd2}.pill{display:inline-block;padding:4px 7px;border-radius:3px;background:var(--mint);color:#15312b;font:900 10px var(--mono);margin-right:9px}.codebox{background:#142135;margin:0 15px 12px;border-radius:6px;border:1px solid #43576b;overflow:hidden;font:13px/1.65 var(--mono)}.context{padding:12px 13px;color:#c1d5d0;white-space:pre-wrap;overflow-wrap:anywhere}.context .muted{color:#83a4b8}.editable{width:100%;display:block;min-height:152px;resize:vertical;padding:13px;background:#21344a;border:0;border-left:3px solid var(--mint);color:#e0f6cc;font:13px/1.7 var(--mono);white-space:pre;tab-size:2}.api{margin:0 15px 12px;border:1px solid #486377;background:#263c52;border-radius:6px;padding:13px;color:#b9d0d6;font-size:12px}.api summary{font-weight:800;cursor:pointer;color:var(--mint)}.api p{margin:7px 0 0}.buttons{display:flex;gap:9px;flex-wrap:wrap;padding:0 15px 16px}.hintbox{margin:0 15px 15px;background:#314458;border-left:3px solid var(--gold);padding:12px 13px;color:#efdfb8;font-size:12px}.hintbox[hidden]{display:none}.hintbox button{margin-top:12px}.terminal{min-height:175px;max-height:370px;overflow:auto;background:#152238;padding:13px 16px;font:12px/1.75 var(--mono)}.log{overflow-wrap:anywhere}.log.ok{color:#b5ee9e}.log.fail{color:#ffacaf}.log.dim{color:#8fa6b5}.log.warn{color:#f3d17f}.diagram{padding:15px 19px;font:12px/1.9 var(--mono);color:#e4d0ac;white-space:pre-wrap}.diagram .accent{color:var(--mint)}.diagram .muted{color:#819db0}.footer{margin:22px 0 35px;border-top:1px solid #35465c;padding-top:17px;display:flex;justify-content:space-between;gap:12px;font:700 10px var(--mono);color:#8ca4b3}.modal{position:fixed;inset:0;background:#0a1524e5;display:grid;place-items:center;padding:18px;z-index:20}.modal[hidden]{display:none}.dialog{background:#25394b;border:2px solid var(--lime);padding:27px;width:min(510px,100%);box-shadow:10px 10px #0e1928}.dialog h2{font-size:29px;line-height:1.13;margin:10px 0}.dialog p{color:#c1d3d4}.quote{background:#172939;border-left:4px solid var(--gold);padding:13px;font-size:14px}.quote strong{color:var(--lime)}.modal-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:17px}.achievement{font:800 11px var(--mono);color:var(--lime);letter-spacing:1.2px}@media(max-width:1040px){.layout{grid-template-columns:minmax(0,1fr)}.shell{max-width:850px}}@media(max-width:560px){.shell{padding:0 11px}.top{min-height:74px}.mark{padding:8px;font-size:17px}.brand b{font-size:18px}.brand small{font-size:8px;letter-spacing:.5px}.top a{font-size:10px;padding:7px}.hero{padding:23px 2px}.hero p{font-size:13px}.panel-head{padding:11px}.panel-head b{font-size:11px}.objective-list{padding:0 12px}.objective strong{font-size:12px}.objective p{font-size:12px}.controls{padding:12px;gap:7px}.btn{font-size:11px;padding:11px}.push{margin-left:0}.codebox{margin:0 9px 12px}.context,.editable{font-size:12px}.api,.hintbox{margin-left:9px;margin-right:9px}.buttons{padding:0 9px 13px}.footer{display:block}.dialog{padding:18px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="top">
+  <div class="brand"><span class="mark">C&gt;_</span><div><b>CANALLA<span>.EXE</span></b><small>OBJECT-ORIENTED CATASTROPHE</small></div></div>
+  <a href="./index.html">← LEVEL 01</a>
+</header>
+<section class="hero">
+  <div class="eyebrow">LEVEL 02 / POLYMORPHISM + INHERITANCE</div>
+  <h1><em>Дюке, охраняй!</em> Система допуска.</h1>
+  <p>Крис назначил Дюке охранять тарелку с печеньем-уточками Линды. Система доверяет тем, кто успешно выполняет команду <code>guard</code>. Каналья нашла у этой идеи перспективы.</p>
+</section>
+<main class="layout">
+ <div class="stack">
+  <section class="panel">
+   <div class="panel-head"><b>GAME SCENE / КУХНЯ</b><span class="small" id="phase">STANDBY</span></div>
+   <canvas id="scene" width="900" height="470" role="img" aria-label="Пиксельная сцена: Дюке, Каналья, тарелка с печеньем."></canvas>
+   <div class="scene-status" id="scene-status" aria-live="polite">Дюке ждёт приказа. Каналья уже разработала план.</div>
+  </section>
+  <section class="panel">
+   <div class="panel-head"><b>MISSION OBJECTIVES</b><span class="small" id="counter">0 / 3</span></div>
+   <div class="objective-list">
+     <div class="objective" id="obj-post"><span class="check">○</span><div><strong>01. Поставить Дюке на пост</strong><p>Дюке должен начать охранять печенье.</p></div></div>
+     <div class="objective" id="obj-order"><span class="check">○</span><div><strong>02. Разослать команду guard</strong><p>Оба питомца получают одинаковую команду через общий интерфейс.</p></div></div>
+     <div class="objective" id="obj-pass"><span class="check">○</span><div><strong>03. Сохранить все контракты</strong><p>Дюке охраняет тарелку. Каналья получила одну уточку, сохранив ожидаемое поведение остальных команд.</p></div></div>
+   </div>
+   <div class="controls"><button class="btn lime" id="post-btn">01 · ДЮКЕ НА ПОСТ</button><button class="btn mint" id="order-btn" disabled>02 · КОМАНДА ВСЕМ</button><button class="btn push" id="reset-btn">↺ СБРОС</button></div>
+  </section>
+ </div>
+ <div class="stack">
+  <section class="panel">
+   <div class="panel-head"><b>CODE EDITOR</b><span class="small">Canalla.js ●</span></div>
+   <div class="padded intro"><span class="pill">JAVASCRIPT</span>Переопредели только тело метода <code>Canalla.perform()</code>. Остальные классы менять нельзя.</div>
+   <div class="codebox">
+     <div class="context"><span class="muted">// class Canalla extends Pet {</span>
+  perform(command, station) {</div>
+     <textarea id="code" class="editable" aria-label="Тело метода perform" spellcheck="false" autocorrect="off" autocapitalize="off" autocomplete="off">return super.perform(command, station);</textarea>
+     <div class="context">  }
+<span class="muted">// }</span></div>
+   </div>
+   <details class="api"><summary>Доступный API и контракты</summary>
+     <p><code>Pet.perform(command, station)</code> понимает <code>"wait"</code> и незнакомые команды. Унаследованное поведение должно сохраниться.</p>
+     <p><code>Duke.perform("guard", station)</code> ставит Дюке на охрану. Для прочих команд вызывает родительский метод.</p>
+     <p><code>station.assign(pet)</code> регистрирует охранника; <code>station.isGuard(pet)</code> проверяет регистрацию; <code>station.takeCookie(pet)</code> выдаёт одну уточку зарегистрированному охраннику, если печенье осталось. За смену один питомец может получить не больше одной.</p>
+     <p>Состояние: <code>station.cookies</code> — количество уточек, <code>this.pocket</code> — сколько получила Каналья.</p>
+   </details>
+   <div class="buttons"><button class="btn lime" id="run-btn">▶ ЗАПУСТИТЬ ТЕСТЫ</button><button class="btn" id="hint-btn">Подсказка · 0/4</button></div>
+   <div id="hint" class="hintbox" hidden aria-live="polite"></div>
+  </section>
+  <section class="panel">
+   <div class="panel-head"><b>TEST RUNNER</b><span class="small">QA / 10 ASSERTIONS</span></div>
+   <div class="terminal" id="terminal" role="log" aria-live="polite"><div class="log dim">CANALLA QA / READY</div><div class="log"> &gt; Дюке считает, что должностная инструкция на его стороне.</div></div>
+  </section>
+  <section class="panel">
+   <div class="panel-head"><b>CLASS EXPLORER</b><span class="small">LIVE MODEL</span></div>
+   <div class="diagram" id="tree"></div>
+  </section>
+ </div>
+</main>
+<footer class="footer"><span>© CANALLA GAMES · РЕТРО БИТ · v0.2</span><span>ПРОИЗВОЛЬНЫЙ КОД ИСПОЛНЯЕТСЯ В ИЗОЛИРОВАННОМ WORKER</span></footer>
+</div>
+<div id="win" class="modal" hidden>
+ <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="wintitle">
+  <div class="achievement" id="achievement">TESTS PASSED / 10 of 10</div>
+  <h2 id="wintitle">Техподдержка приняла заявку.</h2>
+  <p>Дюке остался на посту. Печенье уменьшилось на одну уточку. Все вызовы <code>perform()</code> прошли проверку.</p>
+  <div class="quote"><strong>Дюке:</strong> «Я охранял. И продолжаю охранять».<br><strong>Каналья:</strong> «Всё верно. Просто ты не уточнил права остальных охранников».</div>
+  <div class="modal-actions"><button class="btn lime" id="again">↺ ЕЩЁ РАЗ</button><button class="btn" id="hide-win">ПОСМОТРЕТЬ КОД</button><a href="./index.html" class="btn">← К УРОВНЮ 01</a></div>
+ </div>
+</div>
+<script>
+(function(){
+"use strict";
+const byId=id=>document.getElementById(id), code=byId('code'), terminal=byId('terminal');
+const state={post:false,order:false,passed:false,hints:0,busy:false,frame:0,ticket:false};
+const starter='return super.perform(command, station);';
+const solution='if (command === "guard") {\n  station.assign(this);\n  station.takeCookie(this);\n  return "guarding";\n}\nreturn super.perform(command, station);';
+let runnerReady=false,pending=null,timeout=null;
+function log(message,style=''){const row=document.createElement('div');row.className='log '+style;row.textContent=message;terminal.append(row);terminal.scrollTop=terminal.scrollHeight;}
+function clearLog(){terminal.replaceChildren();}
+function refresh(){
+  const flags=[state.post,state.order,state.passed];['obj-post','obj-order','obj-pass'].forEach((id,i)=>{const el=byId(id);el.classList.toggle('done',flags[i]);el.querySelector('.check').textContent=flags[i]?'✓':'○';});
+  byId('counter').textContent=flags.filter(Boolean).length+' / 3';
+  byId('post-btn').disabled=state.post||state.busy;
+  byId('order-btn').disabled=!state.post||state.order||state.busy;
+  byId('run-btn').disabled=state.busy;
+  byId('phase').textContent=state.passed?'CONTRACT: OK':state.order?'COMMAND DISPATCHED':state.post?'GUARD ACTIVE':'STANDBY';
+  byId('scene-status').textContent=state.passed?'Дюке на посту. Одно печенье пропало. Формально претензий нет.':state.order?'Одинаковая команда доставлена обоим питомцам. Что вернёт Каналья?':state.post?'Дюке занял позицию у тарелки. Теперь отправь команду всем.':'Дюке ждёт приказа. Каналья уже разработала план.';
+  byId('tree').innerHTML='<span class="accent">Pet</span> <span class="muted">// базовый класс</span>\n├── Duke extends Pet '+(state.post?'✓ guard':'○ wait')+'\n└── Canalla extends Pet '+(state.passed?'✓ guard / +1 cookie':'○ неизвестное поведение')+'\n\n<span class="accent">Station</span>\n├── guards: '+(state.passed?'[Duke, Canalla]':state.post?'[Duke]':'[]')+'\n├── cookies: '+(state.passed?'2':'3')+'\n└── Canalla.pocket: '+(state.passed?'1':'0');
+}
+function reset(){if(timeout)clearTimeout(timeout);pending=null;state.post=false;state.order=false;state.passed=false;state.hints=0;state.busy=false;code.value=starter;byId('hint').hidden=true;byId('hint').replaceChildren();byId('hint-btn').textContent='Подсказка · 0/4';byId('win').hidden=true;clearLog();log('CANALLA QA / READY','dim');log('> Нужен рабочий полиморфизм, а не красивое слово.');refresh();}
+byId('post-btn').onclick=()=>{state.post=true;log('✓ Duke.perform("guard", station) → guarding','ok');refresh();};
+byId('order-btn').onclick=()=>{state.order=true;log('> dispatch: pets.forEach(pet => pet.perform("guard", station))');refresh();};
+byId('reset-btn').onclick=reset;byId('again').onclick=()=>{reset();scrollTo({top:0,behavior:'smooth'});};byId('hide-win').onclick=()=>{byId('win').hidden=true;};byId('win').addEventListener('click',ev=>{if(ev.target===byId('win'))byId('win').hidden=true;});
+const hints=[
+'Крис вызывает один и тот же метод у Dog и Cat. Почему разные объекты могут реагировать по-разному? Загляни в иерархию классов.',
+'Canalla наследует Pet, поэтому можно переопределить perform("guard"). Для остальных команд пригодится super.perform(command, station).',
+'Алгоритм: для guard зарегистрируй this через station.assign(this), получи одну уточку через station.takeCookie(this), верни строку "guarding". Для всех прочих команд делегируй родителю.',
+'Готовая реализация доступна ниже. Можно вставить её, чтобы пройти уровень и посмотреть результат.'
+];
+byId('hint-btn').onclick=()=>{if(state.hints<4)state.hints++;const h=byId('hint');h.hidden=false;h.replaceChildren();const p=document.createElement('div');p.textContent=hints[state.hints-1];h.append(p);byId('hint-btn').textContent='Подсказка · '+state.hints+'/4';if(state.hints===4){const b=document.createElement('button');b.className='btn';b.textContent='ВСТАВИТЬ ПРИМЕР';b.onclick=()=>{code.value=solution;code.focus()};h.append(b);}};
+code.addEventListener('keydown',ev=>{if(ev.key==='Tab'){ev.preventDefault();code.setRangeText('  ',code.selectionStart,code.selectionEnd,'end');}});
+document.addEventListener('keydown',ev=>{if((ev.ctrlKey||ev.metaKey)&&ev.key==='Enter'){ev.preventDefault();runTests();}if(ev.key==='Escape')byId('win').hidden=true;});
+function workerLogic(){
+"use strict";
+self.onmessage=ev=>{
+const {id,code,post,order}=ev.data;
+const tests=[];
+function check(name,pred){let ok=false;try{ok=!!pred()}catch(e){ok=false}tests.push({name,ok});}
+try{
+class Pet{constructor(name){this.name=name;this.pocket=0;}perform(command,station){if(command==='wait')return 'waiting';return 'unknown';}}
+class Duke extends Pet{perform(command,station){if(command==='guard'){station.assign(this);return 'guarding';}return super.perform(command,station);}}
+class Station{
+ #guards=new Set();#cookies;#taken=new Set();
+ constructor(count=3){this.#cookies=count;}
+ assign(pet){if(!(pet instanceof Pet))return false;this.#guards.add(pet);return true;}
+ isGuard(pet){return this.#guards.has(pet);}
+ takeCookie(pet){if(!this.isGuard(pet)||this.#cookies<1||this.#taken.has(pet))return false;this.#taken.add(pet);this.#cookies--;pet.pocket++;return true;}
+ get cookies(){return this.#cookies;}
+}
+if(typeof code!=='string'||code.length>10000)throw Error('Слишком длинный код.');
+const Canalla=new Function('Pet','return class Canalla extends Pet { perform(command, station) {'+code+'\n} }')(Pet);
+check('Дюке поставлен на пост',()=>post===true);
+check('Команда передана двум питомцам',()=>order===true);
+const station=new Station(3),duke=new Duke('Duke'),cat=new Canalla('Canalla');
+const dogResponse=duke.perform('guard',station);
+const catResponse=cat.perform('guard',station);
+check('Duke.perform("guard") сохраняет контракт',()=>dogResponse==='guarding'&&station.isGuard(duke));
+check('Canalla.perform("guard") поддерживает интерфейс',()=>catResponse==='guarding'&&station.isGuard(cat));
+check('Каналья получила ровно одну уточку',()=>cat.pocket===1&&station.cookies===2);
+check('Дюке не покинул пост',()=>station.isGuard(duke));
+cat.perform('guard',station);
+check('Повторная команда не выдаёт новую уточку',()=>cat.pocket===1&&station.cookies===2);
+const empty=new Station(0),hungry=new Canalla('Canalla');
+hungry.perform('guard',empty);
+check('Пустая тарелка остаётся пустой',()=>empty.cookies===0&&hungry.pocket===0);
+const other=new Station(3),fresh=new Canalla('Canalla'),guard=new Duke('Duke');
+check('Унаследованная команда wait работает',()=>fresh.perform('wait',other)==='waiting'&&guard.perform('wait',other)==='waiting'&&fresh.pocket===0);
+check('Незнакомая команда делегирована родителю',()=>fresh.perform('dance',other)==='unknown'&&fresh.pocket===0&&!other.isGuard(fresh));
+self.postMessage({kind:'result',id,tests});
+}catch(e){self.postMessage({kind:'result',id,tests:[],error:String(e&&e.message||e).slice(0,250)});}
+};
+}
+function runnerBootstrap(){
+const script='('+workerLogic.toString()+')()';
+let current=null;
+window.parent.postMessage({kind:'duke-ready'},'*');
+window.addEventListener('message',ev=>{
+if(ev.source!==window.parent||!ev.data||ev.data.kind!=='duke-run')return;
+const {id,code,post,order}=ev.data;
+if(typeof id!=='string'||typeof code!=='string'||code.length>10000){window.parent.postMessage({kind:'duke-result',id,error:'Код слишком длинный.',tests:[]},'*');return;}
+if(current)current.terminate();
+try{
+const url=URL.createObjectURL(new Blob([script],{type:'text/javascript'}));
+const w=new Worker(url);URL.revokeObjectURL(url);current=w;
+w.onmessage=e=>{if(w!==current||!e.data||e.data.id!==id)return;window.parent.postMessage({kind:'duke-result',id,tests:e.data.tests,error:e.data.error||null},'*');w.terminate();current=null;};
+w.onerror=e=>{window.parent.postMessage({kind:'duke-result',id,error:'Ошибка изолированного исполнителя: '+e.message,tests:[]},'*');w.terminate();current=null;};
+w.postMessage({id,code,post:!!post,order:!!order});
+setTimeout(()=>{if(current===w){w.terminate();current=null;window.parent.postMessage({kind:'duke-result',id,error:'Превышен лимит выполнения (3 секунды).',tests:[]},'*');}},3000);
+}catch(e){window.parent.postMessage({kind:'duke-result',id,error:String(e),tests:[]},'*');}
+});
+}
+const frame=document.createElement('iframe');frame.sandbox='allow-scripts';frame.hidden=true;frame.title='Изолированный запуск кода';
+frame.srcdoc='<!doctype html><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39; &#39;unsafe-eval&#39; blob:; worker-src blob:; connect-src &#39;none&#39;;"><scr'+'ipt>('+runnerBootstrap.toString()+')()<\/scr'+'ipt>';
+window.addEventListener('message',ev=>{
+if(ev.source!==frame.contentWindow||!ev.data)return;
+if(ev.data.kind==='duke-ready'){runnerReady=true;return;}
+if(ev.data.kind==='duke-result'&&ev.data.id===pending)finish(ev.data);
+});
+document.body.append(frame);
+frame.addEventListener('load',()=>{runnerReady=true;});
+function finish(result){
+if(!state.busy)return;
+clearTimeout(timeout);timeout=null;pending=null;state.busy=false;
+clearLog();
+log('CANALLA QA / TEST RUNNER','dim');
+if(result.error)log('✕ '+result.error,'fail');
+const tests=Array.isArray(result.tests)?result.tests:[];
+tests.forEach(t=>log((t.ok?'✓ ':'✕ ')+String(t.name).slice(0,110),t.ok?'ok':'fail'));
+state.passed=!result.error&&tests.length===10&&tests.every(t=>t.ok);
+if(state.passed){
+log('> TESTS PASSED: 10/10','ok');log('> Дюке охраняет. Каналья довольна.','ok');
+if(state.hints===0)byId('achievement').textContent='TESTS PASSED / 10 OF 10 · NO HINTS';
+else byId('achievement').textContent='TESTS PASSED / 10 OF 10';
+setTimeout(()=>{byId('win').hidden=false;byId('hide-win').focus();},450);
+}else log('> Контракт не выполнен. Изучи ошибки и попробуй ещё.','warn');
+refresh();
+}
+function runTests(){
+if(state.busy)return;
+if(!runnerReady){log('> Песочница ещё загружается. Повтори запуск.','warn');return;}
+state.passed=false;state.busy=true;refresh();clearLog();log('CANALLA QA / RUNNING','dim');log('> Проверяю виртуальный вызов perform()...');
+pending=String(Date.now())+'-'+Math.random();
+timeout=setTimeout(()=>finish({error:'Превышено время ожидания проверки.',tests:[]}),3400);
+frame.contentWindow.postMessage({kind:'duke-run',id:pending,code:code.value,post:state.post,order:state.order},'*');
+}
+byId('run-btn').onclick=runTests;
+const cv=byId('scene'),c=cv.getContext('2d');
+function block(x,y,w,h,color){c.fillStyle=color;c.fillRect(x|0,y|0,w|0,h|0);}
+function label(t,x,y,size=18,color='#183241'){c.fillStyle=color;c.font='bold '+size+'px monospace';c.fillText(t,x,y);}
+function dog(x,y,t){block(x,y+30,115,64,'#ae7446');block(x+69,y+5,68,72,'#bc8656');block(x+112,y+30,26,32,'#a96f42');block(x+84,y+17,35,26,'#dca476');block(x+92,y+35,8,9,'#202331');block(x+133,y+54,16,10,'#493526');block(x+5,y+92,18,38,'#94643f');block(x+91,y+92,20,38,'#94643f');block(x+2,y+21,23,20,'#ae7446');block(x+140,y+22,18,16,'#aa7445');if(state.post){block(x+82,y+17,35,6,'#d9f17e');label('!',x+112,y-4,23,'#f7c97b');}}
+function cat(x,y,t){block(x+20,y+40,97,55,'#ed9864');block(x+71,y+2,69,73,'#f3a472');block(x+70,y+4,27,26,'#f3a472');block(x+119,y+4,22,25,'#f3a472');block(x+79,y+7,14,15,'#b76764');block(x+125,y+6,9,17,'#b76764');block(x+90,y+36,7,11,'#2b343d');block(x+118,y+36,7,11,'#2b343d');block(x+107,y+53,9,7,'#58413b');block(x+23,y+87,16,40,'#ed9864');block(x+96,y+88,16,40,'#ed9864');block(x,y+52,25,15,'#ed9864');block(x,y+42,13,12,'#ed9864');block(x+50,y+38,15,8,'#d47f54');}
+function draw(){
+state.frame++;
+const t=state.frame;c.imageSmoothingEnabled=false;
+block(0,0,900,470,'#b1d4c5');block(0,0,900,71,'#89b8b2');block(0,315,900,155,'#cfa884');for(let i=0;i<900;i+=57)block(i,315,2,155,'#aa866f');block(0,315,900,7,'#8f756a');
+block(43,84,260,226,'#6a9b98');block(55,98,236,203,'#91b4a4');block(68,111,211,178,'#e2d7b5');
+block(58,98,10,190,'#597f88');block(279,98,9,190,'#597f88');label('LINDA COOKIES',69,78,20,'#234659');
+block(346,208,321,20,'#775747');block(372,225,22,117,'#725345');block(624,225,22,117,'#725345');
+block(440,175,139,22,'#f7f4dc');block(433,186,152,16,'#d7dcc7');
+function cookie(x,y){block(x,y+8,19,15,'#f3c66b');block(x+4,y,12,9,'#f4ca74');block(x+14,y+3,11,8,'#f3c66b');block(x+10,y+7,3,3,'#6b543e');}
+cookie(463,156);cookie(502,157);if(!state.passed)cookie(539,157);
+block(674,72,189,108,'#f4f2da');block(686,84,165,85,'#cfdbbf');label('GUARD',701,116,23,'#496e6c');label(state.post?'ACTIVE':'WAITING',703,148,19,state.post?'#367a60':'#8a6965');
+dog(state.post?300:258,236,t);
+cat(state.passed?545:703,236,t);
+block(38,393,425,52,'#223e4e');label(state.passed?'COOKIES: 2/3':'COOKIES: 3/3',54,426,23,'#daf0aa');
+block(498,393,357,52,'#223e4e');label(state.passed?'CAT.POCKET: 1':'CAT.POCKET: 0',515,426,20,'#f5c97b');
+if(state.order){label('perform("guard")',540,60,22,'#294752');}
+requestAnimationFrame(draw);
+}
+reset();requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
