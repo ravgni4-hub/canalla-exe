@@ -38,6 +38,11 @@
               <div class="panel-title" id="scene-title"><span class="panel-square"></span> LIVE SCENE <span class="subtle">/ KITCHEN_01</span></div>
               <span class="pill"><span class="live-dot"></span> SIMULATION</span>
             </div>
+            <div class="actions">
+              <button class="action primary" id="enter-btn" type="button"><span>01</span> Залезть в холодильник</button>
+              <button class="action secondary" id="eat-btn" type="button" disabled><span>02</span> Съесть сосиску</button>
+              <button class="action ghost" id="restart-btn" type="button" aria-label="Начать уровень заново">↺ Сбросить</button>
+            </div>
             <div class="canvas-wrap"><canvas id="scene" width="960" height="535" role="img" aria-label="Пиксельная сцена кухни. Слева холодильник с сосисками, Каналья и Крис. Управляйте событиями кнопками под сценой."></canvas></div>
             <div class="scene-caption"><span id="scene-status">Каналья оценивает условия эксплуатации холодильника.</span><span class="frame-counter">FRAME: <span id="frame-number">0001</span></span></div>
           </section>
@@ -49,18 +54,14 @@
               <div class="objective" id="objective-eat"><span class="status-icon" aria-hidden="true">○</span><div><b>02. Съесть сосиску</b><span>Теперь объект Sausage должен оказаться внутри Canalla.</span></div></div>
               <div class="objective" id="objective-code"><span class="status-icon" aria-hidden="true">○</span><div><b>03. Сохранить контракт</b><span><code>fridge.contains(sausage) === true</code> даже после перекуса.</span></div></div>
             </div>
-            <div class="actions">
-              <button class="action primary" id="enter-btn" type="button"><span>01</span> Залезть в холодильник</button>
-              <button class="action secondary" id="eat-btn" type="button" disabled><span>02</span> Съесть сосиску</button>
-              <button class="action ghost" id="restart-btn" type="button" aria-label="Начать уровень заново">↺ Сбросить</button>
-            </div>
+
           </section>
         </div>
 
         <div class="right-stack">
           <section class="panel editor-panel" aria-labelledby="editor-title">
-            <div class="panel-bar"><div class="panel-title" id="editor-title"><span class="panel-square"></span> CODE EDITOR</div><div class="file-tab">Container.js <span>●</span></div></div>
-            <div class="editor-intro"><span class="chip">JAVASCRIPT</span><span>Изменяй только тело метода <code>contains()</code>.</span></div>
+            <div class="panel-bar"><div class="panel-title" id="editor-title"><span class="panel-square"></span> ШАГ 03 · CODE EDITOR</div><div class="file-tab">Container.js <span>●</span></div></div>
+            <div class="editor-intro"><span class="chip">JAVASCRIPT</span><span>Сначала действия 01–02 в панели слева. Затем изменяй только тело метода <code>contains()</code>.</span></div>
             <div class="code-shell" aria-label="Редактор JavaScript">
               <div class="code-line muted"><span class="ln">01</span><span><span class="keyword">class</span> <span class="type">Container</span> {</span></div>
               <div class="code-line muted"><span class="ln">02</span><span>  <span class="function">contains</span>(target) {</span></div>
@@ -70,14 +71,14 @@
             </div>
             <details class="api-note" style="display:block"><summary style="cursor:pointer;color:#b9eaa5;font-weight:800">Доступный API и контракты (раскрыть)</summary><p>У каждого объекта есть массив <code>this.items</code>. Каждый вложенный объект тоже поддерживает <code>contains(target)</code>. Прямой <code>includes()</code> проверяет только непосредственные элементы.</p></details>
             <div class="editor-actions">
-              <button class="run-button" id="run-btn" type="button"><span aria-hidden="true">▶</span> ЗАПУСТИТЬ ТЕСТЫ <span class="keyboard-hint">Ctrl ↵</span></button>
+              <button class="run-button" id="run-btn" type="button" disabled title="Сначала залезь в холодильник и съешь сосиску"><span aria-hidden="true">▶</span> 04 · ЗАПУСТИТЬ ТЕСТЫ <span class="keyboard-hint">Ctrl ↵</span></button>
               <button class="hint-button" id="hint-btn" type="button">Подсказка <span id="hint-count">0/3</span></button>
             </div>
             <div id="hint" class="hint-message" hidden role="status"></div>
           </section>
 
           <section class="panel terminal-panel" aria-labelledby="terminal-title">
-            <div class="panel-bar"><div class="panel-title" id="terminal-title"><span class="panel-square"></span> TEST RUNNER</div><span class="terminal-cursor">_</span></div>
+            <div class="panel-bar"><div class="panel-title" id="terminal-title"><span class="panel-square"></span> 04 · TEST RUNNER</div><span class="terminal-cursor">_</span></div>
             <div class="terminal-output" id="terminal-output" role="log" aria-live="polite" aria-atomic="false">
               <div class="terminal-line dim">CANALLA QA / READY</div>
               <div class="terminal-line">&gt; Жду, когда человек наконец запустит тесты.</div>
@@ -227,7 +228,7 @@ window.addEventListener(&quot;message&quot;, (ev) =&gt; {
     $("goal-title").nextElementSibling.textContent = [state.inside,state.fed,state.passed].filter(Boolean).length+" / 3";
     enterBtn.disabled = state.inside || state.busy;
     eatBtn.disabled = !state.inside || state.fed || state.busy;
-    runBtn.disabled = state.busy;
+    runBtn.disabled = state.busy || !state.fed;
     $("scene-status").textContent = state.status;
     updateTree();
   }
@@ -289,7 +290,7 @@ window.addEventListener(&quot;message&quot;, (ev) =&gt; {
   const hints = [
     "Сейчас includes() видит только непосредственных детей объекта. А где именно теперь лежит сосиска? Посмотри на дерево объектов.",
     "Перебери this.items. Для каждого item проверь: это target? Если нет, попробуй item.contains(target). Подойдёт Array.prototype.some().",
-    "Готовый пример рекурсивной проверки. Можешь вставить его и запустить тесты."
+    "Готовое решение рекурсивной проверки. Можешь вставить его в редактор и запустить тесты."
   ];
   $("hint-btn").addEventListener("click", () => {
     if(state.hintIndex < 3) state.hintIndex++;
@@ -297,7 +298,7 @@ window.addEventListener(&quot;message&quot;, (ev) =&gt; {
     const hint=$("hint"); hint.hidden=false;hint.replaceChildren();
     const text=document.createElement("span"); text.textContent = hints[state.hintIndex-1];hint.append(text);
     if (state.hintIndex === 3) {
-      const btn=document.createElement("button");btn.type="button";btn.className="hint-button";btn.style.cssText="display:block;margin-top:10px;background:#263d49";btn.textContent="Вставить пример в редактор";
+      const btn=document.createElement("button");btn.type="button";btn.className="hint-button";btn.style.cssText="display:block;margin-top:10px;background:#263d49";btn.textContent="ВСТАВИТЬ РЕШЕНИЕ";
       btn.onclick=()=>{code.value=SOLUTION;code.focus();};hint.append(btn);
     }
   });
@@ -312,7 +313,7 @@ window.addEventListener(&quot;message&quot;, (ev) =&gt; {
     if (!state.busy) return;
     clearTimeout(pendingTimeout); pendingTimeout=null;pendingId=null;
     state.busy=false;
-    runBtn.textContent="▶ ЗАПУСТИТЬ ТЕСТЫ";
+    runBtn.textContent="▶ 04 · ЗАПУСТИТЬ ТЕСТЫ";
     const tests=Array.isArray(result.tests)?result.tests:[];
     if (result.error) line("✕ " + String(result.error).slice(0,220), "fail");
     for(const t of tests) line((t.ok?"✓ ":"✕ ")+String(t.label).slice(0,120),t.ok?"ok":"fail");
@@ -331,6 +332,7 @@ window.addEventListener(&quot;message&quot;, (ev) =&gt; {
   }
   function runTests() {
     if(state.busy) return;
+    if(!state.fed){line("> Сначала выполни действия 01 и 02: залезь в холодильник и съешь сосиску.","warn");return;}
     if(!runnerReady){line("> Песочница ещё не загрузилась. Повтори попытку.","warn");return;}
     state.busy=true;state.passed=false;
     updateObjectives();
