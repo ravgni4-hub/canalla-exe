@@ -153,8 +153,7 @@ self.postMessage({kind:'result',id,tests});
 }catch(e){self.postMessage({kind:'result',id,tests:[],error:String(e&&e.message||e).slice(0,250)});}
 };
 }
-function runnerBootstrap(){
-const script='('+workerLogic.toString()+')()';
+function runnerBootstrap(script){
 let current=null;
 window.parent.postMessage({kind:'duke-ready'},'*');
 window.addEventListener('message',ev=>{
@@ -173,7 +172,7 @@ setTimeout(()=>{if(current===w){w.terminate();current=null;window.parent.postMes
 });
 }
 const frame=document.createElement('iframe');frame.sandbox='allow-scripts';frame.hidden=true;frame.title='Изолированный запуск кода';
-frame.srcdoc='<!doctype html><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39; &#39;unsafe-eval&#39; blob:; worker-src blob:; connect-src &#39;none&#39;;"><scr'+'ipt>('+runnerBootstrap.toString()+')()<\/scr'+'ipt>';
+frame.srcdoc='<!doctype html><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39; &#39;unsafe-eval&#39; blob:; worker-src blob:; connect-src &#39;none&#39;;"><scr'+'ipt>('+runnerBootstrap.toString()+')('+JSON.stringify('('+workerLogic.toString()+')()')+')<\/scr'+'ipt>';
 window.addEventListener('message',ev=>{
 if(ev.source!==frame.contentWindow||!ev.data)return;
 if(ev.data.kind==='duke-ready'){runnerReady=true;return;}
