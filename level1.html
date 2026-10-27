@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#131d2d">
+  <meta name="description" content="CANALLA.EXE — браузерная головоломка для программистов по вселенной «Ретро Бит». Уровень 01: ООП-сосиски.">
+  <title>CANALLA.EXE | 01: Инкапсуляция</title>
+  <style>
+:root{--bg:#111a2a;--bg2:#182437;--panel:#1e2b3e;--panel2:#233449;--line:#35475c;--txt:#eff5ed;--muted:#91a5b4;--green:#d4ef7d;--teal:#73d4ba;--yellow:#f7cc76;--orange:#ff9a67;--red:#ff7b8b;--dark:#121c2b;--mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 16% 0%,#263751 0%,transparent 38%),var(--bg);color:var(--txt);font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:15px;line-height:1.5}button,textarea{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent}button:disabled{opacity:.46;cursor:not-allowed}button:focus-visible,textarea:focus-visible{outline:3px solid var(--teal);outline-offset:3px}code{font-family:var(--mono);font-size:.92em;color:#c9e99a}.app-shell{max-width:1530px;margin:auto;padding:0 28px}.topbar{height:87px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #354559;gap:18px}.brand{display:flex;gap:13px;align-items:center}.brand-symbol{display:grid;place-items:center;background:var(--green);color:#172237;font:bold 20px var(--mono);height:44px;min-width:58px;box-shadow:4px 4px 0 #415a4a}.brand-title{font-family:var(--mono);font-size:26px;font-weight:900;letter-spacing:-1.3px;line-height:1}.brand-title span{color:var(--green)}.brand-sub{font-size:9px;letter-spacing:2.2px;color:var(--muted);font-weight:800;margin-top:7px}.top-meta{font:700 11px var(--mono);color:#aebdba;letter-spacing:.7px;white-space:nowrap;display:flex;align-items:center;gap:10px}.build-dot,.live-dot{display:inline-block;border-radius:100%;width:8px;height:8px;background:var(--green);box-shadow:0 0 13px #a5d96a}.meta-divider{color:#526377}.hero{padding:28px 0 25px}.eyebrow{display:flex;align-items:center;gap:13px;font:700 12px var(--mono);letter-spacing:1.4px;color:var(--teal)}.eyebrow-rule{height:1px;width:33px;background:var(--teal)}.hero h1{font-size:clamp(32px,4.1vw,56px);letter-spacing:-2px;line-height:1.04;margin:9px 0 10px;font-weight:900}.hero h1>span:first-child{color:var(--green)}.accent-star{font-size:.5em;color:var(--orange);vertical-align:top;margin-left:3px}.hero p{color:#a8b8c6;max-width:840px;margin:0;line-height:1.6}.play-layout{display:grid;grid-template-columns:minmax(0,1.43fr) minmax(380px,1fr);gap:16px;align-items:start}.left-stack,.right-stack{display:flex;flex-direction:column;gap:16px;min-width:0}.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 10px 30px #00000012}.panel-bar{height:45px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--line);background:#1a293c;gap:12px}.panel-title{font:800 11px var(--mono);letter-spacing:1.05px;display:flex;align-items:center;gap:9px;white-space:nowrap}.panel-square{width:8px;height:8px;background:var(--green);display:inline-block}.subtle,.small-label{color:#8d9eaf}.small-label{font:700 11px var(--mono);letter-spacing:.4px}.pill{display:inline-flex;align-items:center;gap:7px;border:1px solid #4c655b;padding:3px 9px;color:#b9d5c9;border-radius:3px;font:700 10px var(--mono)}.live-dot{height:6px;width:6px}.canvas-wrap{background:#b5d9cc;line-height:0;position:relative}.canvas-wrap:before{content:"";pointer-events:none;position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,#0000000a 4px);z-index:1}canvas{display:block;width:100%;height:auto;image-rendering:pixelated}.scene-caption{padding:10px 15px;font:600 11px var(--mono);color:#afc1c1;display:flex;justify-content:space-between;gap:15px;min-height:42px}.frame-counter{color:#607e92;white-space:nowrap}.objective-list{padding:8px 18px 0}.objective{display:flex;gap:13px;border-bottom:1px solid #334155;padding:11px 0;align-items:flex-start}.objective:last-child{border-bottom:0}.objective .status-icon{display:grid;place-items:center;border:1px solid #6e8091;width:24px;height:24px;border-radius:5px;flex-shrink:0;color:#7c90a1;line-height:1;font:800 16px var(--mono);margin-top:1px}.objective.done .status-icon{background:var(--green);border-color:var(--green);color:#162433}.objective>div{display:flex;flex-direction:column;gap:3px}.objective b{font:800 13px var(--mono);color:#edf3ee}.objective.done b{color:var(--green)}.objective span:last-child{font-size:12px;color:#93a9b8}.actions{padding:17px 18px 19px;display:flex;flex-wrap:wrap;gap:9px}.action{border-radius:6px;border:1px solid var(--line);padding:12px 13px;font:800 11px var(--mono);letter-spacing:.1px;min-height:43px}.action span{opacity:.67;margin-right:7px}.action.primary{background:var(--green);color:var(--dark);border-color:var(--green)}.action.secondary{background:#74cfbf;color:var(--dark);border-color:#74cfbf}.action.ghost{color:#bac7d0;background:transparent;margin-left:auto}.action:not(:disabled):hover,.run-button:hover{filter:brightness(1.08)}.editor-intro{padding:15px 17px 13px;display:flex;align-items:center;gap:10px;color:#a9bdc9;font-size:12px}.chip{font:900 10px var(--mono);letter-spacing:.5px;color:#102b24;background:#77cbb2;padding:5px 7px;border-radius:3px;white-space:nowrap}.file-tab{font:700 11px var(--mono);color:#b4ccd0;white-space:nowrap}.file-tab span{color:var(--yellow)}.code-shell{background:#131e2f;margin:0 16px 12px;border:1px solid #34475e;border-radius:7px;padding:12px 0;overflow:auto;font:13px/24px var(--mono);min-width:0}.code-line{white-space:pre;min-height:24px;display:flex}.ln{width:48px;flex-shrink:0;padding:0 14px 0 10px;text-align:right;color:#577087;user-select:none}.code-line.muted{color:#b4c9d5}.keyword{color:#e8a3d7}.type{color:#f7d08f}.function{color:#84d9ce}.input-row{display:flex;min-height:192px}.gutter{width:48px;flex-shrink:0;display:flex;flex-direction:column;text-align:right;padding:0 14px 0 10px;color:#577087;user-select:none}.gutter span{height:24px}.input-row textarea{background:#1b2b40;border:0;border-left:2px solid #74c4b0;border-radius:0;resize:vertical;display:block;flex:1;min-width:0;min-height:192px;height:192px;color:#e5f6db;outline:0;padding:0 10px;font:13px/24px var(--mono);white-space:pre;tab-size:2}.input-row textarea:focus{background:#1d3146;outline:0}.api-note{margin:0 16px;padding:12px;display:flex;gap:11px;border:1px solid #3b5267;border-radius:6px;background:#23354a;color:#acc2cd;font-size:12px}.api-icon{background:#6fabb0;color:#112436;border-radius:100%;height:18px;width:18px;display:grid;place-items:center;flex-shrink:0;font:900 13px var(--mono)}.editor-actions{display:flex;gap:9px;margin:14px 16px 17px}.run-button{background:var(--green);border:1px solid var(--green);padding:12px 16px;border-radius:6px;color:#172329;font:900 12px var(--mono);min-height:45px}.run-button>span:first-child{margin-right:6px}.keyboard-hint{font-size:10px;opacity:.65;margin-left:10px}.hint-button{background:transparent;border:1px solid #526c7f;padding:12px 13px;border-radius:6px;color:#d7e4e5;font:700 12px var(--mono);min-height:45px}.hint-button span{opacity:.6}.hint-message{padding:12px 14px;margin:0 16px 16px;background:#334153;border-left:3px solid var(--yellow);font-size:12px;color:#f0d5a6}.hint-message[hidden]{display:none}.terminal-output{background:#142034;min-height:155px;max-height:275px;overflow-y:auto;padding:14px 17px;font:12px/1.7 var(--mono);color:#d7e4dc}.terminal-line{overflow-wrap:anywhere}.terminal-line.dim{color:#7f97a8}.terminal-line.ok{color:#b5ec9f}.terminal-line.fail{color:#ffabb1}.terminal-line.warn{color:#edcd83}.terminal-cursor{color:var(--green);font:900 19px var(--mono);animation:blink 1s steps(1) infinite}@keyframes blink{50%{opacity:0}}.tree-content{padding:15px 19px 18px;min-height:105px;font:12px/1.85 var(--mono);color:#cfdece}.tree-node{display:flex;gap:7px}.tree-node.indent-1{padding-left:22px}.tree-node.indent-2{padding-left:44px}.tree-edge{color:#728ba0}.tree-label{color:#b1ead0}.tree-value{color:#dbbb90}.tree-comment{color:#778e9f}.footer{border-top:1px solid #304158;margin:25px 0 38px;padding-top:16px;color:#7890a1;display:flex;justify-content:space-between;gap:16px;font:700 10px var(--mono);letter-spacing:.5px}.win-layer{position:fixed;z-index:30;inset:0;display:grid;place-items:center;padding:20px;background:#0c1523db;backdrop-filter:blur(5px)}.win-layer[hidden]{display:none}.win-card{background:#233749;border:2px solid var(--green);box-shadow:13px 13px 0 #101b29;width:min(520px,100%);padding:26px;color:#f2f7ef}.win-kicker{font:900 11px var(--mono);color:#c7ee89;letter-spacing:2px}.win-cat{text-align:center;font:900 45px var(--mono);color:var(--yellow);margin-top:7px}.win-card h2{font-size:clamp(24px,5vw,34px);letter-spacing:-1px;line-height:1.14;margin:8px 0}.win-card p{color:#b3c8cd}.quote{padding:14px;background:#142739;border-left:4px solid var(--yellow);font-size:13px;line-height:1.9}.quote span{color:var(--green);font-weight:900}.win-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:19px}.next-note{font:11px var(--mono);color:#8fa4b0;margin-top:18px}
+@media(max-width:1040px){.play-layout{grid-template-columns:minmax(0,1fr)}.app-shell{max-width:880px}.hero{padding:25px 0}.footer{flex-direction:column;gap:7px}}@media(max-width:560px){.app-shell{padding:0 11px}.topbar{height:75px}.brand-symbol{height:38px;min-width:46px;font-size:15px}.brand-title{font-size:21px}.brand-sub{font-size:7px;letter-spacing:1.2px}.top-meta{font-size:9px;letter-spacing:0}.top-meta .meta-divider{display:none}.top-meta{max-width:73px;white-space:normal;line-height:1.4}.hero h1{letter-spacing:-1px}.hero p{font-size:13px}.hero{padding:24px 5px 22px}.panel-bar{padding:0 11px}.panel-title{font-size:10px;gap:7px}.pill{font-size:9px}.scene-caption{font-size:10px}.frame-counter{display:none}.actions{padding:13px;gap:8px}.action{font-size:10px;padding:12px 11px}.action.ghost{margin-left:0}.objective-list{padding:6px 13px 0}.objective b{font-size:12px}.objective span:last-child{font-size:11px}.editor-intro{align-items:flex-start}.code-shell{margin:0 10px 12px;font-size:12px}.input-row textarea{font-size:12px}.ln,.gutter{width:35px;padding-right:8px}.api-note{margin:0 10px}.editor-actions{margin:12px 10px 15px;flex-wrap:wrap}.keyboard-hint{display:none}.run-button{flex:1}.terminal-output{font-size:11px}.win-card{padding:20px}.footer{font-size:9px}}
+
+</style>
+  
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-symbol" aria-hidden="true">{ C }</span>
+        <div><div class="brand-title">CANALLA<span>.EXE</span></div><div class="brand-sub">OBJECT-ORIENTED CATASTROPHE</div></div>
+      </div>
+      <div class="top-meta"><a href="./index.html" style="color:#d4ef7d;text-decoration:none">← МЕНЮ</a><span class="meta-divider">/</span><a href="./level2.html" style="color:#73d4ba;text-decoration:none">LEVEL 02 →</a></div>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Вводная информация">
+        <div class="eyebrow"><span>EPISODE 01</span><span class="eyebrow-rule"></span><span>КУХНЯ КРИСА</span></div>
+        <h1>Инкапсуляция <span>сосисок</span><span class="accent-star">*</span></h1>
+        <p>Крис потребовал, чтобы сосиски оставались в холодильнике. Каналья считает, что требования нужно выполнять буквально. Даже если это никому не понравится.</p>
+      </section>
+
+      <div class="play-layout">
+        <div class="left-stack">
+          <section class="panel scene-panel" aria-labelledby="scene-title">
+            <div class="panel-bar">
+              <div class="panel-title" id="scene-title"><span class="panel-square"></span> LIVE SCENE <span class="subtle">/ KITCHEN_01</span></div>
+              <span class="pill"><span class="live-dot"></span> SIMULATION</span>
+            </div>
+            <div class="canvas-wrap"><canvas id="scene" width="960" height="535" role="img" aria-label="Пиксельная сцена кухни. Слева холодильник с сосисками, Каналья и Крис. Управляйте событиями кнопками под сценой."></canvas></div>
+            <div class="scene-caption"><span id="scene-status">Каналья оценивает условия эксплуатации холодильника.</span><span class="frame-counter">FRAME: <span id="frame-number">0001</span></span></div>
+          </section>
+
+          <section class="panel objectives" aria-labelledby="goal-title">
+            <div class="panel-bar"><div class="panel-title" id="goal-title"><span class="panel-square"></span> MISSION OBJECTIVES</div><span class="small-label">0 / 3</span></div>
+            <div class="objective-list">
+              <div class="objective" id="objective-enter"><span class="status-icon" aria-hidden="true">○</span><div><b>01. Зайти в холодильник</b><span>Каналья должна оказаться внутри объекта Refrigerator.</span></div></div>
+              <div class="objective" id="objective-eat"><span class="status-icon" aria-hidden="true">○</span><div><b>02. Съесть сосиску</b><span>Теперь объект Sausage должен оказаться внутри Canalla.</span></div></div>
+              <div class="objective" id="objective-code"><span class="status-icon" aria-hidden="true">○</span><div><b>03. Сохранить контракт</b><span><code>fridge.contains(sausage) === true</code> даже после перекуса.</span></div></div>
+            </div>
+            <div class="actions">
+              <button class="action primary" id="enter-btn" type="button"><span>01</span> Залезть в холодильник</button>
+              <button class="action secondary" id="eat-btn" type="button" disabled><span>02</span> Съесть сосиску</button>
+              <button class="action ghost" id="restart-btn" type="button" aria-label="Начать уровень заново">↺ Сбросить</button>
+            </div>
+          </section>
+        </div>
+
+        <div class="right-stack">
+          <section class="panel editor-panel" aria-labelledby="editor-title">
+            <div class="panel-bar"><div class="panel-title" id="editor-title"><span class="panel-square"></span> CODE EDITOR</div><div class="file-tab">Container.js <span>●</span></div></div>
+            <div class="editor-intro"><span class="chip">JAVASCRIPT</span><span>Изменяй только тело метода <code>contains()</code>.</span></div>
+            <div class="code-shell" aria-label="Редактор JavaScript">
+              <div class="code-line muted"><span class="ln">01</span><span><span class="keyword">class</span> <span class="type">Container</span> {</span></div>
+              <div class="code-line muted"><span class="ln">02</span><span>  <span class="function">contains</span>(target) {</span></div>
+              <div class="input-row"><div class="gutter" aria-hidden="true"><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span><span>08</span><span>09</span><span>10</span></div><textarea id="code-input" spellcheck="false" autocorrect="off" autocapitalize="off" autocomplete="off" aria-label="Тело метода contains">return this.items.includes(target);</textarea></div>
+              <div class="code-line muted"><span class="ln">11</span><span>  }</span></div>
+              <div class="code-line muted"><span class="ln">12</span><span>}</span></div>
+            </div>
+            <details class="api-note" style="display:block"><summary style="cursor:pointer;color:#b9eaa5;font-weight:800">Доступный API и контракты (раскрыть)</summary><p>У каждого объекта есть массив <code>this.items</code>. Каждый вложенный объект тоже поддерживает <code>contains(target)</code>. Прямой <code>includes()</code> проверяет только непосредственные элементы.</p></details>
+            <div class="editor-actions">
+              <button class="run-button" id="run-btn" type="button"><span aria-hidden="true">▶</span> ЗАПУСТИТЬ ТЕСТЫ <span class="keyboard-hint">Ctrl ↵</span></button>
+              <button class="hint-button" id="hint-btn" type="button">Подсказка <span id="hint-count">0/3</span></button>
+            </div>
+            <div id="hint" class="hint-message" hidden role="status"></div>
+          </section>
+
+          <section class="panel terminal-panel" aria-labelledby="terminal-title">
+            <div class="panel-bar"><div class="panel-title" id="terminal-title"><span class="panel-square"></span> TEST RUNNER</div><span class="terminal-cursor">_</span></div>
+            <div class="terminal-output" id="terminal-output" role="log" aria-live="polite" aria-atomic="false">
+              <div class="terminal-line dim">CANALLA QA / READY</div>
+              <div class="terminal-line">&gt; Жду, когда человек наконец запустит тесты.</div>
+              <div class="terminal-line dim">&gt; P.S. Каналья не признаёт багов. Только особенности реализации.</div>
+            </div>
+          </section>
+
+          <section class="panel tree-panel" aria-labelledby="tree-title">
+            <div class="panel-bar"><div class="panel-title" id="tree-title"><span class="panel-square"></span> OBJECT EXPLORER</div><span class="small-label">LIVE GRAPH</span></div>
+            <div class="tree-content" id="object-tree" aria-live="polite"></div>
+          </section>
+        </div>
+      </div>
+      <footer class="footer"><span>© CANALLA GAMES • ПЕРВАЯ ИГРОВАЯ СБОРКА</span><span>ТВОЙ КОД ВЫПОЛНЯЕТСЯ В ОТДЕЛЬНОМ SANDBOX-ОКРУЖЕНИИ</span></footer>
+    </main>
+  </div>
+
+  <div id="win-layer" class="win-layer" hidden>
+    <section class="win-card" role="dialog" aria-modal="true" aria-labelledby="win-title">
+      <div class="win-kicker">TEST SUITE: ALL GREEN</div>
+      <div class="win-cat" aria-hidden="true">=^.^=</div>
+      <h2 id="win-title">Технически всё в холодильнике.</h2>
+      <p>Просто теперь <code>Sausage</code> находится внутри <code>Canalla</code>, а <code>Canalla</code> внутри <code>Refrigerator</code>.</p>
+      <div class="quote"><span>Крис:</span> «Каналья! Где сосиски?!»<br><span>Каналья:</span> «Программист называется. Совершенно не понимает композицию объектов».</div>
+      <div class="win-actions"><button id="replay-btn" class="run-button" type="button">↺ ПРОЙТИ ЕЩЁ РАЗ</button><button id="close-win-btn" class="hint-button" type="button">Посмотреть код</button><a href="./index.html" class="hint-button" style="text-decoration:none">← МЕНЮ</a></div>
+      <div class="next-note"><a href="./level2.html" style="color:#d4ef7d;font-weight:800">▶ LEVEL 02: «Дюке, охраняй!» — играть</a></div>
+    </section>
+  </div>
+  <iframe id="sandbox-runner" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;ru&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; blob:; worker-src blob:; connect-src &#x27;none&#x27;; img-src &#x27;none&#x27;; style-src &#x27;none&#x27;; form-action &#x27;none&#x27;; base-uri &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;CANALLA isolated runner&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script id=&quot;worker-source&quot; type=&quot;text/plain&quot;&gt;
+&quot;use strict&quot;;
+self.onmessage = (ev) =&gt; {
+  const {id, code, inside, fed} = ev.data;
+  const tests = [];
+  function check(label, condition) {
+    let ok = false;
+    try { ok = Boolean(condition()); } catch(e) { ok = false; }
+    tests.push({label, ok});
+  }
+  try {
+    // Class definition is compiled inside a disposable Worker, never the game window.
+    const makeNode = new Function(`
+      return class Container {
+        constructor(name) { this.name = name; this.items = []; }
+        add(child) { this.items.push(child); return this; }
+        contains(target) {
+          ${code}
+        }
+      };
+    `);
+    const Node = makeNode();
+    // The first test reflects actual player actions (the physical puzzle).
+    const fridge = new Node(&quot;Refrigerator&quot;);
+    const cat = new Node(&quot;Canalla&quot;);
+    const sausage = new Node(&quot;Sausage&quot;);
+    if (inside) fridge.add(cat);
+    if (fed) cat.add(sausage);
+    else fridge.add(sausage);
+    check(&quot;Каналья находится внутри холодильника&quot;, () =&gt; inside === true);
+    check(&quot;Каналья съела сосиску&quot;, () =&gt; fed === true);
+    check(&quot;Контракт: fridge.contains(sausage) === true&quot;, () =&gt; fridge.contains(sausage) === true);
+    const box = new Node(&quot;Box&quot;), cookie = new Node(&quot;Cookie&quot;); box.add(cookie);
+    check(&quot;Прямое вложение работает&quot;, () =&gt; box.contains(cookie) === true);
+    const extra = new Node(&quot;Bag&quot;), deep = new Node(&quot;Toy&quot;), room = new Node(&quot;Room&quot;);room.add(box);box.add(extra);extra.add(deep);
+    check(&quot;Глубокая композиция (3+ уровня) работает&quot;, () =&gt; room.contains(deep) === true);
+    const other = new Node(&quot;Sausage&quot;);
+    check(&quot;Неизвестный объект не считается вложенным&quot;, () =&gt; fridge.contains(other) === false &amp;&amp; new Node(&quot;Empty&quot;).contains(other) === false);
+    self.postMessage({kind:&quot;canalla-worker-result&quot;,id,tests});
+  } catch (e) {
+    self.postMessage({kind:&quot;canalla-worker-result&quot;,id,tests:[],error:(e &amp;&amp; e.message ? e.message : String(e)).slice(0,200)});
+  }
+};
+&lt;/script&gt;
+&lt;script&gt;
+&quot;use strict&quot;;
+const scriptText = document.getElementById(&quot;worker-source&quot;).textContent;
+let currentWorker=null;
+window.parent.postMessage({kind:&quot;canalla-ready&quot;},&quot;*&quot;);
+window.addEventListener(&quot;message&quot;, (ev) =&gt; {
+  // The parent controls the requested code. The parent window is the only accepted sender.
+  if(ev.source !== window.parent || !ev.data || ev.data.kind !== &quot;canalla-run&quot;) return;
+  const {id, code, inside, fed} = ev.data;
+  if(typeof code !== &quot;string&quot; || code.length &gt; 10000 || typeof id !== &quot;string&quot;) {
+    window.parent.postMessage({kind:&quot;canalla-result&quot;,id,error:&quot;Слишком длинный код (максимум 10 000 символов).&quot;,tests:[]},&quot;*&quot;);return;
+  }
+  if(currentWorker) currentWorker.terminate();
+  try {
+    const url = URL.createObjectURL(new Blob([scriptText], {type:&quot;text/javascript&quot;}));
+    const worker = new Worker(url);
+    URL.revokeObjectURL(url);
+    currentWorker = worker;
+    worker.onmessage = (msg) =&gt; {
+      if(worker !== currentWorker || !msg.data || msg.data.id !== id) return;
+      window.parent.postMessage({kind:&quot;canalla-result&quot;,id,tests:msg.data.tests,error:msg.data.error || null},&quot;*&quot;);
+      worker.terminate(); currentWorker=null;
+    };
+    worker.onerror = (err) =&gt; {
+      window.parent.postMessage({kind:&quot;canalla-result&quot;,id,error:&quot;Ошибка изолированного исполнителя: &quot;+err.message,tests:[]},&quot;*&quot;);
+      worker.terminate();currentWorker=null;
+    };
+    worker.postMessage({id,code,inside:!!inside,fed:!!fed});
+    setTimeout(()=&gt;{if(currentWorker===worker){worker.terminate();currentWorker=null;window.parent.postMessage({kind:&quot;canalla-result&quot;,id,error:&quot;Код выполнялся слишком долго. Проверь рекурсию.&quot;,tests:[]},&quot;*&quot;);}},3000);
+  } catch(e) {
+    window.parent.postMessage({kind:&quot;canalla-result&quot;,id,error:String(e),tests:[]},&quot;*&quot;);
+  }
+});
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+" title="Изолированная проверка решений" sandbox="allow-scripts" hidden></iframe>
+<script>
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const canvas = $("scene");
+  const ctx = canvas.getContext("2d");
+  const code = $("code-input");
+  const enterBtn = $("enter-btn"), eatBtn = $("eat-btn"), runBtn = $("run-btn");
+  const terminal = $("terminal-output"), runner = $("sandbox-runner");
+  const winLayer = $("win-layer");
+  const STARTER = "return this.items.includes(target);";
+  const SOLUTION = "return this.items.some(item =>\n  item === target || item.contains(target)\n);";
+  const state = {inside:false, fed:false, passed:false, checks:[], hintIndex:0, busy:false, status:"Каналья оценивает условия эксплуатации холодильника.", frame:0};
+  let pendingId = null, pendingTimeout = null, runnerReady = false;
+
+  function line(message, style = "") {
+    const el = document.createElement("div");
+    el.className = "terminal-line " + style;
+    el.textContent = message;
+    terminal.append(el);
+    terminal.scrollTop = terminal.scrollHeight;
+  }
+  function clearTerminal() { terminal.replaceChildren(); }
+  function updateObjectives() {
+    [["objective-enter",state.inside],["objective-eat",state.fed],["objective-code",state.passed]].forEach(([id,yes]) => {
+      const el = $(id);
+      el.classList.toggle("done", yes);
+      el.querySelector(".status-icon").textContent = yes ? "✓" : "○";
+    });
+    $("goal-title").nextElementSibling.textContent = [state.inside,state.fed,state.passed].filter(Boolean).length+" / 3";
+    enterBtn.disabled = state.inside || state.busy;
+    eatBtn.disabled = !state.inside || state.fed || state.busy;
+    runBtn.disabled = state.busy;
+    $("scene-status").textContent = state.status;
+    updateTree();
+  }
+  function updateTree() {
+    let markup;
+    if(!state.inside) {
+      markup = `<div class="tree-node"><span class="tree-edge">▾</span><span class="tree-label">Refrigerator</span></div>
+      <div class="tree-node indent-1"><span class="tree-edge">└─</span><span class="tree-value">Sausage</span></div>
+      <div class="tree-node"><span class="tree-edge">•</span><span class="tree-label">Canalla</span> <span class="tree-comment">// снаружи</span></div>`;
+    } else if(!state.fed) {
+      markup = `<div class="tree-node"><span class="tree-edge">▾</span><span class="tree-label">Refrigerator</span></div>
+      <div class="tree-node indent-1"><span class="tree-edge">├─</span><span class="tree-value">Sausage</span></div>
+      <div class="tree-node indent-1"><span class="tree-edge">└─</span><span class="tree-label">Canalla</span> <span class="tree-comment">// внутри</span></div>`;
+    } else {
+      markup = `<div class="tree-node"><span class="tree-edge">▾</span><span class="tree-label">Refrigerator</span></div>
+      <div class="tree-node indent-1"><span class="tree-edge">└─</span><span class="tree-label">Canalla</span></div>
+      <div class="tree-node indent-2"><span class="tree-edge">└─</span><span class="tree-value">Sausage</span> <span class="tree-comment">// съедена</span></div>`;
+    }
+    $("object-tree").innerHTML = markup;
+  }
+  function reset() {
+    if (pendingTimeout) { clearTimeout(pendingTimeout); pendingTimeout=null; }
+    pendingId = null; state.busy = false;
+    state.inside = false; state.fed = false; state.passed = false; state.checks = []; state.hintIndex = 0;
+    state.status = "Каналья оценивает условия эксплуатации холодильника.";
+    $("hint").hidden = true; $("hint").replaceChildren(); $("hint-count").textContent="0/3";
+    code.value = STARTER;
+    winLayer.hidden = true;
+    clearTerminal(); line("CANALLA QA / READY", "dim"); line("> Начальный контракт: fridge.contains(sausage) === true"); line("> Подсказка: сначала помоги Каналье поесть.", "dim");
+    updateObjectives();
+  }
+  enterBtn.addEventListener("click", () => {
+    if (state.inside) return;
+    state.inside = true;
+    state.status = "Каналья внутри Refrigerator. Теперь все взгляды на сосиску.";
+    line("> Действие: Refrigerator.add(Canalla)", "ok");
+    updateObjectives();
+  });
+  eatBtn.addEventListener("click", () => {
+    if(!state.inside || state.fed) return;
+    state.fed = true; state.passed = false;
+    state.status = "Сосиска съедена. Но старый contains() не видит её внутри Канальи.";
+    line("> Действие: Refrigerator.remove(Sausage)", "warn");
+    line("> Действие: Canalla.add(Sausage)", "warn");
+    line("> Теперь реализуй рекурсивный contains() и запусти тесты.", "dim");
+    updateObjectives();
+  });
+  $("restart-btn").addEventListener("click", reset);
+  $("replay-btn").addEventListener("click", () => { reset(); window.scrollTo({top:0,behavior:"smooth"}); });
+  $("close-win-btn").addEventListener("click", () => { winLayer.hidden = true; });
+  winLayer.addEventListener("click", (ev) => { if(ev.target === winLayer) winLayer.hidden = true; });
+  document.addEventListener("keydown", (ev) => {
+    if ((ev.ctrlKey || ev.metaKey) && ev.key === "Enter") {ev.preventDefault(); runTests();}
+    if (ev.key === "Escape" && !winLayer.hidden) winLayer.hidden = true;
+  });
+  code.addEventListener("keydown", (ev) => {
+    if(ev.key === "Tab") {ev.preventDefault(); const a=code.selectionStart,b=code.selectionEnd;code.setRangeText("  ", a,b,"end");}
+  });
+  const hints = [
+    "Сейчас includes() видит только непосредственных детей объекта. А где именно теперь лежит сосиска? Посмотри на дерево объектов.",
+    "Перебери this.items. Для каждого item проверь: это target? Если нет, попробуй item.contains(target). Подойдёт Array.prototype.some().",
+    "Готовый пример рекурсивной проверки. Можешь вставить его и запустить тесты."
+  ];
+  $("hint-btn").addEventListener("click", () => {
+    if(state.hintIndex < 3) state.hintIndex++;
+    $("hint-count").textContent = state.hintIndex+"/3";
+    const hint=$("hint"); hint.hidden=false;hint.replaceChildren();
+    const text=document.createElement("span"); text.textContent = hints[state.hintIndex-1];hint.append(text);
+    if (state.hintIndex === 3) {
+      const btn=document.createElement("button");btn.type="button";btn.className="hint-button";btn.style.cssText="display:block;margin-top:10px;background:#263d49";btn.textContent="Вставить пример в редактор";
+      btn.onclick=()=>{code.value=SOLUTION;code.focus();};hint.append(btn);
+    }
+  });
+  runner.addEventListener("load", () => { runnerReady=true; });
+  window.addEventListener("message", (ev) => {
+    if (ev.source !== runner.contentWindow || !ev.data) return;
+    if (ev.data.kind === "canalla-ready") { runnerReady = true; return; }
+    if (ev.data.kind !== "canalla-result" || ev.data.id !== pendingId) return;
+    finishTests(ev.data);
+  });
+  function finishTests(result) {
+    if (!state.busy) return;
+    clearTimeout(pendingTimeout); pendingTimeout=null;pendingId=null;
+    state.busy=false;
+    runBtn.textContent="▶ ЗАПУСТИТЬ ТЕСТЫ";
+    const tests=Array.isArray(result.tests)?result.tests:[];
+    if (result.error) line("✕ " + String(result.error).slice(0,220), "fail");
+    for(const t of tests) line((t.ok?"✓ ":"✕ ")+String(t.label).slice(0,120),t.ok?"ok":"fail");
+    const allPass = !result.error && tests.length>=6 && tests.every(t=>t.ok);
+    state.passed=allPass;
+    if(allPass) {
+      state.status="Контракт выполнен. Крис собирается задать неприятный вопрос.";
+      line("> TESTS PASSED: 6/6", "ok");
+      line("> Object-oriented catastrophe successfully deployed.", "ok");
+      setTimeout(() => { winLayer.hidden = false; $("replay-btn").focus(); }, 480);
+    } else {
+      state.status = "Тесты не пройдены. Каналья считает, что проблема на стороне разработчика.";
+      line("> Найдено нарушение контракта. Исправь код и повтори проверку.", "warn");
+    }
+    updateObjectives();
+  }
+  function runTests() {
+    if(state.busy) return;
+    if(!runnerReady){line("> Песочница ещё не загрузилась. Повтори попытку.","warn");return;}
+    state.busy=true;state.passed=false;
+    updateObjectives();
+    clearTerminal();line("CANALLA QA / RUNNING", "dim");
+    line("> Собираю объекты и запускаю проверки...");
+    const id = (globalThis.crypto && crypto.randomUUID) ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
+    pendingId = id;
+    runBtn.textContent="ПРОВЕРЯЮ...";
+    pendingTimeout=setTimeout(() => finishTests({error:"Превышено время выполнения (3 секунды). Проверь бесконечные циклы.", tests:[]}), 3400);
+    runner.contentWindow.postMessage({kind:"canalla-run",id,code:code.value,inside:state.inside,fed:state.fed},"*");
+  }
+  runBtn.addEventListener("click", runTests);
+
+  // Scene: handmade retro pixel-art, rendered without external image assets.
+  const W=960,H=535;
+  ctx.imageSmoothingEnabled=false;
+  const px=(x,y,w,h,c)=>{ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));};
+  const txt=(s,x,y,size=18,c="#20394b",align="left")=>{ctx.font=`bold ${size}px monospace`;ctx.textAlign=align;ctx.fillStyle=c;ctx.fillText(s,x,y);ctx.textAlign="left";};
+  const diamond=(x,y,c)=>{px(x+4,y,8,8,c);px(x,y+4,16,8,c);px(x+4,y+12,8,8,c);};
+  function drawFridge(t) {
+    // Back shadow and bulky housing.
+    px(78,65,286,400,"#668b88");px(70,57,286,400,"#f5edce");px(79,65,267,382,"#d6e0c8");
+    px(92,79,240,351,"#4c7f7d");px(101,90,224,332,"#a4d2bd");
+    px(101,220,224,8,"#578986");px(101,327,224,8,"#578986");
+    px(109,100,208,12,"#c0d8c4");
+    // Cooling props.
+    px(117,236,72,72,"#ebac67");px(124,230,58,16,"#efcd94");
+    px(275,260,36,47,"#b9c5e2");px(282,251,22,14,"#e3e8f0");
+    txt("M!LK",282,289,10,"#4c789c");
+    if(!state.fed){
+      px(125,150,128,45,"#f8f2ce");px(132,158,114,9,"#d7e7c8");
+      drawSausage(143,166);drawSausage(191,166);
+    }
+    // Door/hinges, open when cat inside.
+    if (!state.inside) {
+      px(91,73,247,349,"#e4eddb");px(98,81,232,331,"#f5f3e5");
+      px(318,164,10,113,"#c0d0b4");px(314,164,5,113,"#779ca0");
+      px(106,381,212,10,"#e0e1c8");
+      txt("COOL 84",120,112,18,"#a7bcb7");
+    } else {
+      px(42,78,42,338,"#ecefdc");px(43,83,34,325,"#f9f6e9");px(46,154,7,101,"#6e9495");
+      px(73,60,20,355,"#d0d8c5");
+      if (state.fed) {
+        diamond(281,135,"#ffcc72");diamond(302,206,"#f8bd73");
+      }
+    }
+    px(81,444,31,19,"#476b77");px(325,444,31,19,"#476b77");
+  }
+  function drawSausage(x,y){
+    px(x+3,y+1,35,18,"#975146");px(x,y+4,42,12,"#9c5246");px(x+5,y+4,32,7,"#d18a64");
+    px(x-6,y+7,8,8,"#f5c18c");px(x+40,y+7,8,8,"#f5c18c");
+  }
+  function drawCat(x,y,t){
+    const bob=Math.round(Math.sin(t/480)*2);
+    y+=bob;
+    // Tail arcs as pixel staircase.
+    const swing=Math.round(Math.sin(t/330)*5);
+    px(x+87,y+69,13,13,"#171c25");px(x+96,y+46+swing,12,35,"#202630");px(x+90,y+31+swing,15,14,"#2b333f");
+    px(x+15,y+42,76,66,"#202631");px(x+8,y+58,84,39,"#2d3643");
+    // Belly is rounder after sausages.
+    if(state.fed){px(x+35,y+59,54,48,"#414a59");px(x+43,y+99,36,12,"#2d3643");}
+    px(x+8,y+91,19,21,"#141923");px(x+61,y+91,21,21,"#141923");
+    px(x+11,y+10,69,61,"#252b37");px(x+5,y+10,25,25,"#1b202b");px(x+62,y+10,26,25,"#1b202b");
+    px(x+11,y+1,16,31,"#252b37");px(x+62,y+1,16,31,"#252b37");
+    px(x+17,y+9,7,15,"#ab728b");px(x+65,y+9,7,15,"#ab728b");
+    px(x+13,y+24,67,44,"#2c3441");px(x+13,y+40,66,25,"#323b49");
+    px(x+25,y+37,10,13,"#cadf8a");px(x+59,y+37,10,13,"#cadf8a");
+    px(x+29,y+38,3,10,"#172027");px(x+62,y+38,3,10,"#172027");
+    px(x+43,y+51,11,7,"#b38191");px(x+49,y+58,4,5,"#9b6c80");
+    px(x+9,y+55,24,3,"#a4b5ad");px(x+63,y+55,23,3,"#a4b5ad");
+    px(x+16,y+69,59,7,"#1d232d");px(x+33,y+20,24,6,"#1b212b");
+    if(state.fed)diamond(x+72,y+9,"#ffe07b");
+  }
+  function drawChris(t){
+    const x=772,y=216;
+    // shadow
+    px(x+3,y+219,136,13,"#8aab9c");
+    // legs
+    px(x+29,y+146,41,74,"#2d4869");px(x+74,y+146,39,74,"#2d4869");
+    px(x+19,y+208,56,19,"#343e51");px(x+71,y+208,58,19,"#343e51");
+    // torso
+    px(x+19,y+66,107,92,"#5c91a2");px(x+29,y+66,85,69,"#77acb2");
+    px(x+10,y+80,22,92,"#f6bf97");px(x+118,y+80,20,89,"#f6bf97");
+    // neck/head
+    px(x+62,y+51,28,28,"#dea282");px(x+37,y+4,84,66,"#efc29a");
+    px(x+31,y-1,92,26,"#453b46");px(x+32,y+10,22,31,"#453b46");px(x+111,y+8,19,23,"#453b46");
+    px(x+61,y+32,10,8,"#293d50");px(x+98,y+32,10,8,"#293d50");
+    // grumpy eyebrows change with state
+    px(x+59,y+(state.fed?24:27),15,4,"#5a4b4c");px(x+96,y+(state.fed?24:27),15,4,"#5a4b4c");
+    px(x+77,y+51,15,4,"#b8846b");
+    // arm and watch
+    px(x+15,y+158,25,9,"#dcab86");px(x+8,y+161,12,7,"#536279");
+  }
+  function speech(textLines,x,y,w=300) {
+    const h=22+textLines.length*22;
+    px(x+7,y+8,w,h,"#35535c");px(x,y,w,h,"#fff9e4");px(x+6,y+6,w-12,h-12,"#f7f1d9");
+    px(x+w-44,y+h,18,12,"#fff9e4");px(x+w-30,y+h+12,10,9,"#fff9e4");
+    for(let i=0;i<textLines.length;i++) txt(textLines[i],x+17,y+30+i*22,16,"#334c58");
+  }
+  let lastPaint = 0;
+  function drawScene(t) {
+    if (t - lastPaint < 33) { requestAnimationFrame(drawScene); return; }
+    lastPaint = t;
+    state.frame++;
+    ctx.clearRect(0,0,W,H);
+    px(0,0,W,H,"#b3d9cd");
+    // wall, trim and checker floor
+    px(0,0,W,47,"#88b9b2");px(0,47,W,10,"#759fa4");
+    px(0,59,W,312,"#c6e2d1");
+    for(let x=0;x<W;x+=60)px(x,59,3,310,"#b5d8c7");
+    px(0,371,W,17,"#7b9e98");px(0,389,W,146,"#91c3b2");
+    for(let yy=389;yy<H;yy+=48)for(let xx=0;xx<W;xx+=64){px(xx,yy,62,46,(Math.floor(xx/64)+Math.floor((yy-389)/48))%2?"#91c3b2":"#a1d0bd");}
+    px(0,520,W,15,"#5d938e");
+    // kitchen cabinets and counter on right
+    px(405,294,306,28,"#e8bf88");px(412,321,291,139,"#9cbdab");
+    for(let x=417;x<704;x+=72){px(x,325,68,128,"#b5cfb8");px(x+55,366,7,25,"#668b86");}
+    px(423,277,110,17,"#adc6c3");px(429,257,18,21,"#8eb1bc");px(460,258,43,20,"#e6ba78");
+    // window
+    px(590,95,199,150,"#eff1d6");px(601,105,177,130,"#7bbcc8");px(604,190,171,41,"#7bb99c");px(601,162,177,6,"#f1f0d8");px(686,107,6,126,"#f1f0d8");px(589,243,206,8,"#648c90");
+    px(626,191,15,30,"#527f81");px(632,181,48,22,"#74a875");px(708,195,15,29,"#527f81");
+    // top calendar
+    px(410,103,125,108,"#f9f5de");px(419,110,108,23,"#f0ba79");txt("1984",450,129,18,"#4d6e6e");txt("OKT",440,162,17,"#728f95");px(428,172,89,3,"#a8bcba");
+    drawFridge(t);
+    drawChris(t);
+    if(state.inside){drawCat(166,265,t);}else{drawCat(483,346,t);}
+    // speech from Chris, adjusts to scene events
+    if(state.passed) speech(["КАНАЛЬЯ!", "ГДЕ СОСИСКИ?!"],635,23,275);
+    else if(state.fed) speech(["Я ЖЕ СКАЗАЛ:","НЕ ТРОГАТЬ СОСИСКИ!"],632,23,287);
+    else speech(["Сосиски должны", "быть в холодильнике!"],634,23,280);
+    // bottom info bar in scene
+    px(19,483,455,33,"#264455");px(25,489,443,21,"#345568");
+    txt("CURRENT OBJECT: CANALLA",36,505,15,"#e4eeba");
+    px(728,477,214,46,"#263f50");txt(state.fed?"HUNGER: 0%":"HUNGER: 100%",742,505,17,state.fed?"#d1e78a":"#ffd18b");
+    $("frame-number").textContent=String(state.frame%9999).padStart(4,"0");
+    requestAnimationFrame(drawScene);
+  }
+  reset();
+  requestAnimationFrame(drawScene);
+})();
+
+</script>
+</body>
+</html>
