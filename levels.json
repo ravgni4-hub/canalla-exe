@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "updated": "2026-10-27",
   "levels": [
     {
@@ -34,6 +34,28 @@
       "status": "playable",
       "href": "./level3.html",
       "icon": "box"
+    },
+    {
+      "id": "04",
+      "slug": "keyboard",
+      "title": "Четыре лапы, одна клавиатура",
+      "short": "Крис оставил компьютер. Каналья переназначает клавиатуру умного дома через Command.",
+      "topic": "COMMAND / ДИСПЕТЧЕРИЗАЦИЯ",
+      "tests": 14,
+      "status": "playable",
+      "href": "./level4.html",
+      "icon": "keyboard"
+    },
+    {
+      "id": "05",
+      "slug": "qa",
+      "title": "Старший тестировщик",
+      "short": "Каналья проверяет умный дом: события идут вразнобой, тревоги не должны повторяться.",
+      "topic": "OBSERVER / СОБЫТИЯ",
+      "tests": 16,
+      "status": "playable",
+      "href": "./level5.html",
+      "icon": "bug"
     }
   ]
 }
