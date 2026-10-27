@@ -27,7 +27,7 @@
   <section class="panel">
    <div class="panel-head"><b>GAME SCENE / КУХНЯ</b><span class="small" id="phase">STANDBY</span></div>
    <div class="controls"><button class="btn lime" id="post-btn">01 · ДЮКЕ НА ПОСТ</button><button class="btn mint" id="order-btn" disabled>02 · КОМАНДА ВСЕМ</button><button class="btn push" id="reset-btn">↺ СБРОС</button></div>
-   <canvas id="scene" width="900" height="470" role="img" aria-label="Пиксельная сцена: Дюке, Каналья, тарелка с печеньем."></canvas>
+   <canvas id="scene" width="900" height="470" role="img" aria-label="Пиксельная сцена: белый питбуль Дюке, чёрная кошка Каналья и тарелка с печеньем."></canvas>
    <div class="scene-status" id="scene-status" aria-live="polite">Дюке ждёт приказа. Каналья уже разработала план.</div>
   </section>
   <section class="panel">
@@ -212,38 +212,45 @@ const cv=byId('scene'),c=cv.getContext('2d');
 function block(x,y,w,h,color){c.fillStyle=color;c.fillRect(x|0,y|0,w|0,h|0);}
 function label(t,x,y,size=18,color='#183241'){c.fillStyle=color;c.font='bold '+size+'px monospace';c.fillText(t,x,y);}
 function dog(x,y,t){
-  // Дюке: поднятая голова, длинная шея, четыре лапы и бирюзовый ошейник.
-  const brow=Math.round(Math.sin(t/40)*1);
-  // tail (behind body)
-  block(x-22,y+64,18,13,'#a66c43');
-  block(x-26,y+44,16,23,'#bc8458');
-  block(x-18,y+37,10,12,'#ba8154');
-  // body and chest: side view, facing right
-  block(x+0,y+56,133,67,'#99643e');
-  block(x+8,y+52,123,63,'#b77b4b');
-  block(x+15,y+64,105,47,'#c18b58');
-  block(x+107,y+44,32,79,'#b77b4b');
-  // hind and front paws
-  block(x+13,y+109,24,27,'#976039');block(x+12,y+130,30,9,'#8c5636');
-  block(x+56,y+110,17,26,'#aa6e41');block(x+54,y+131,24,8,'#8c5636');
-  block(x+104,y+110,22,28,'#976039');block(x+102,y+132,28,8,'#8c5636');
-  // upright neck and square raised head
-  block(x+111,y+14,34,86,'#aa7146');
-  block(x+112,y-24+brow,72,79,'#b87a4a');
-  block(x+118,y-21+brow,62,71,'#c38b59');
-  block(x+117,y-31+brow,19,44,'#815236'); // upright ear
-  block(x+118,y-26+brow,10,23,'#9c6742');
-  block(x+166,y-18+brow,14,33,'#956038'); // other ear
-  block(x+142,y+17+brow,47,30,'#d49e6b'); // muzzle
-  block(x+183,y+27+brow,18,16,'#b77b4b');
-  block(x+193,y+27+brow,12,11,'#43342c'); // nose
-  block(x+152,y+6+brow,9,9,'#21252d'); // eye
-  block(x+155,y+6+brow,3,3,'#f2dfb9');
-  block(x+169,y+43+brow,18,3,'#745036'); // mouth
-  // Collar distinct at raised neck, not across forehead
-  block(x+111,y+49,38,9,'#73d5bc');
-  block(x+119,y+56,13,8,'#51a997');
-  if(state.post)label('!',x+182,y-42,27,'#f7c97b');
+  // Дюке — белый питбуль: широкая голова, короткая морда, крепкая шея и грудь.
+  const bob=Math.round(Math.sin(t/40)*1);
+  // Хвост за корпусом, у основания толстый.
+  block(x-26,y+68,36,14,'#8fa7ad');
+  block(x-28,y+53,15,28,'#d4dbd7');
+  block(x-24,y+56,11,17,'#f1f0e9');
+  // Мускулистый корпус и глубокая грудь.
+  block(x-2,y+55,147,78,'#96a9ad');
+  block(x+5,y+51,137,75,'#e3e8e4');
+  block(x+17,y+58,107,49,'#f6f5ee');
+  block(x+30,y+104,89,17,'#c9d2d1');
+  block(x+108,y+42,46,88,'#9caeb2');
+  block(x+115,y+42,35,82,'#eff1ec');
+  // Четыре устойчивые лапы.
+  block(x+11,y+115,29,42,'#a9b9ba');block(x+15,y+113,22,39,'#f0f1ea');block(x+10,y+150,34,9,'#a9b9ba');
+  block(x+59,y+116,21,41,'#afbdbe');block(x+63,y+115,14,36,'#e1e7e3');block(x+58,y+151,25,8,'#a0b3b5');
+  block(x+107,y+114,31,44,'#96aeb0');block(x+112,y+112,24,41,'#eef0ec');block(x+105,y+152,36,8,'#97abad');
+  // Мощная шея и широкая, высоко поднятая голова.
+  block(x+111,y+10,49,94,'#96acb0');
+  block(x+115,y+12,43,89,'#ecf0eb');
+  block(x+104,y-29+bob,86,82,'#91a8ae');
+  block(x+110,y-25+bob,78,74,'#f7f6ef');
+  // Небольшие естественные уши, не длинные и не стоячие.
+  block(x+111,y-39+bob,23,22,'#a5b7b8');
+  block(x+114,y-35+bob,17,17,'#d9e0dc');
+  block(x+164,y-35+bob,21,22,'#a1b4b6');
+  block(x+167,y-31+bob,14,15,'#d7dedd');
+  // Скулы, короткая широкая морда и тёмный нос.
+  block(x+150,y+9+bob,34,26,'#d5ddda');
+  block(x+160,y+18+bob,35,29,'#a4b5b8');
+  block(x+163,y+20+bob,29,23,'#eff0e9');
+  block(x+186,y+24+bob,14,12,'#303943');
+  block(x+154,y+0+bob,9,9,'#26313b');
+  block(x+157,y+1+bob,3,3,'#ffffff');
+  block(x+174,y+44+bob,17,3,'#8a9494');
+  // Ошейник ниже головы.
+  block(x+112,y+51,47,12,'#69ceb6');
+  block(x+119,y+59,14,7,'#2d9f95');
+  if(state.post)label('!',x+175,y-55,27,'#f7c97b');
 }
 function cat(x,y,t){block(x+20,y+40,97,55,'#202630');block(x+71,y+2,69,73,'#303947');block(x+70,y+4,27,26,'#303947');block(x+119,y+4,22,25,'#303947');block(x+79,y+7,14,15,'#ac788f');block(x+125,y+6,9,17,'#ac788f');block(x+90,y+36,7,11,'#cce29a');block(x+118,y+36,7,11,'#cce29a');block(x+93,y+39,3,7,'#151c25');block(x+121,y+39,3,7,'#151c25');block(x+107,y+53,9,7,'#b47c8b');block(x+23,y+87,16,40,'#202630');block(x+96,y+88,16,40,'#202630');block(x,y+52,25,15,'#202630');block(x,y+42,13,12,'#202630');block(x+50,y+38,15,8,'#1b222e');}
 function draw(){
