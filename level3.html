@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101b2a"><meta name="description" content="CANALLA.EXE Level 03 — Коробка за миллион. Головоломка на приватные поля и инкапсуляцию.">
+<title>CANALLA.EXE | 03: Коробка за миллион</title>
+<style>
+:root{--bg:#101a2b;--panel:#1c2c3e;--panel2:#162537;--line:#3c5265;--text:#eef5ee;--muted:#9db2c3;--lime:#d9ed7b;--mint:#81d7be;--gold:#f3c573;--red:#f5a0a8;--mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 82% 0%,#29444b6b,transparent 43%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Arial,sans-serif}a{color:var(--mint);text-decoration:none}button,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.46;cursor:not-allowed}button:focus-visible,a:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--mint);outline-offset:3px}code{color:var(--lime);font:0.93em var(--mono)}
+.wrap{width:min(1380px,calc(100% - 44px));margin:auto}.top{min-height:85px;border-bottom:1px solid #344a5e;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:12px}.logo{background:var(--lime);color:#172535;font:900 22px var(--mono);padding:11px 13px;box-shadow:4px 4px #476054}.brand-name{font:950 25px/1 var(--mono);letter-spacing:-1.4px}.brand-name span{color:var(--lime)}.brand-sub{font:800 9px var(--mono);color:var(--muted);letter-spacing:1.4px;margin-top:6px}.links{display:flex;gap:9px;flex-wrap:wrap}.links a{padding:9px 12px;border:1px solid #49647b;border-radius:5px;font:850 11px var(--mono);white-space:nowrap}.links a:hover{border-color:var(--mint)}.hero{padding:28px 0 26px}.eyebrow{font:850 12px var(--mono);letter-spacing:1.2px;color:var(--mint)}h1{font-size:clamp(31px,4.3vw,54px);line-height:1.07;letter-spacing:-2px;margin:11px 0}.accent{color:var(--lime)}.hero p{color:#b5c6d0;max-width:910px;margin:0;font-size:15px}.layout{display:grid;grid-template-columns:minmax(0,1.28fr) minmax(370px,1fr);gap:16px;align-items:start}.stack{display:grid;gap:16px;min-width:0}.panel{min-width:0;overflow:hidden;border-radius:10px;border:1px solid var(--line);background:var(--panel);box-shadow:0 8px 24px #050c1520}.panel-head{padding:11px 17px;min-height:45px;display:flex;justify-content:space-between;align-items:center;gap:10px;background:#19293b;border-bottom:1px solid var(--line)}.panel-head strong{font:900 12px var(--mono);letter-spacing:.8px}.panel-head strong:before{content:"■";color:var(--lime);margin-right:11px}.meta{font:800 10px var(--mono);color:#8faebf;white-space:nowrap}.scene{display:block;width:100%;height:auto;image-rendering:pixelated;background:#afcebf}.scene-status{padding:12px 17px;color:#c3dbd4;font:750 12px var(--mono);min-height:44px}.objectives{padding:2px 17px}.obj{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #394b5c}.obj:last-child{border:0}.check{display:grid;place-items:center;width:26px;height:26px;border:1px solid #678094;border-radius:5px;color:#8099a9;font:900 17px var(--mono);flex-shrink:0}.obj.done .check{background:var(--lime);border-color:var(--lime);color:#152535}.obj b{font:850 13px var(--mono)}.obj.done b{color:var(--lime)}.obj p{font-size:12px;margin:3px 0 0;color:#a6bccb}.controls{display:flex;gap:9px;flex-wrap:wrap;padding:14px 17px 17px}.btn{min-height:44px;background:transparent;border:1px solid #527187;color:#e4f0ed;border-radius:6px;padding:11px 13px;font:900 11px var(--mono)}.btn:hover:not(:disabled){filter:brightness(1.1)}.btn.primary{background:var(--lime);border-color:var(--lime);color:#172536}.btn.mint{background:var(--mint);border-color:var(--mint);color:#172536}.push{margin-left:auto}.snapshot{padding:0 17px 15px;font:12px/1.65 var(--mono);color:#98b6ba;white-space:pre-wrap}.snapshot b{color:var(--mint)}.editor-intro{padding:15px 16px 13px;color:#b9ced4;font-size:12px}.pill{display:inline-block;background:var(--mint);color:#142c2a;padding:5px 8px;border-radius:4px;font:900 10px var(--mono);margin-right:8px}.codebox{margin:0 15px 13px;border:1px solid #3f566a;border-radius:7px;background:#132033;overflow:hidden}.fixed-code{font:12px/1.75 var(--mono);color:#bdcfda;white-space:pre-wrap;padding:12px}.fixed-code em{font-style:normal;color:#9bd4cd}.code{display:block;width:100%;min-height:192px;resize:vertical;border:0;border-left:3px solid var(--mint);background:#1e3146;color:#ddf4bf;padding:12px 13px;font:13px/1.65 var(--mono);tab-size:2;white-space:pre}.api{margin:0 15px 14px;border:1px solid #49667a;background:#263b50;border-radius:7px;padding:12px;color:#bdd0d8;font-size:12px}.api summary{cursor:pointer;font:850 12px var(--mono);color:var(--mint)}.api p{margin:10px 0 0}.editor-actions{display:flex;gap:9px;flex-wrap:wrap;padding:0 15px 17px}.hint{margin:0 15px 15px;background:#344657;border-left:3px solid var(--gold);padding:13px;color:#f4e0b6;font-size:12px}.hint[hidden]{display:none}.hint .btn{display:block;margin-top:12px}.terminal{min-height:194px;max-height:325px;overflow:auto;background:#142137;padding:14px 16px;font:12px/1.7 var(--mono)}.line{overflow-wrap:anywhere}.line.dim{color:#8ca3b5}.line.ok{color:#bdeca2}.line.fail{color:#fba8ad}.line.warn{color:#f3d18d}.tree{min-height:135px;padding:16px 18px;white-space:pre-wrap;font:12px/1.8 var(--mono);color:#f0d69f}.tree .teal{color:var(--mint)}.tree .dim{color:#91aab7}.footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:25px 0 38px;border-top:1px solid #385066;padding-top:18px;font:750 10px var(--mono);color:#8ca6b6}.overlay{position:fixed;z-index:30;inset:0;display:grid;place-items:center;background:#07121fe7;padding:20px}.overlay[hidden]{display:none}.win{max-width:520px;width:100%;padding:27px;background:#21374b;border:2px solid var(--lime);box-shadow:10px 10px #08101b}.win .label{color:var(--lime);font:900 11px var(--mono);letter-spacing:1.5px}.win h2{font-size:30px;line-height:1.15;letter-spacing:-1px;margin:13px 0}.win p{color:#bfd3d6}.quote{background:#162739;border-left:4px solid var(--gold);padding:14px;font-size:13px}.quote b{color:var(--lime)}.win-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+@media(max-width:1030px){.layout{grid-template-columns:1fr}.wrap{max-width:860px}}@media(max-width:580px){.wrap{width:calc(100% - 22px)}.top{min-height:76px}.logo{font-size:16px;padding:9px}.brand-name{font-size:18px}.brand-sub{font-size:7px;letter-spacing:.3px}.links a{font-size:10px;padding:7px}.hero{padding:25px 3px 23px}.hero p{font-size:13px}.panel-head{padding:11px}.panel-head strong{font-size:10px}.meta{font-size:9px}.objectives{padding:0 12px}.controls{padding:12px;gap:7px}.controls .btn{flex-grow:1}.push{margin-left:0}.editor-intro{padding:13px}.codebox{margin:0 9px 12px}.fixed-code,.code{font-size:12px}.api,.hint{margin-inline:9px}.editor-actions{padding-inline:9px}.win{padding:19px}.win h2{font-size:26px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+ <a class="brand" href="./index.html" aria-label="CANALLA.EXE — главное меню"><span class="logo">C&gt;_</span><span><span class="brand-name">CANALLA<span>.EXE</span></span><span class="brand-sub" style="display:block">OBJECT-ORIENTED CATASTROPHE</span></span></a>
+ <nav class="links" aria-label="Навигация"><a href="./index.html">← МЕНЮ</a><a href="./level2.html">LEVEL 02</a></nav>
+</header>
+<section class="hero">
+ <div class="eyebrow">LEVEL 03 / ENCAPSULATION + PRIVATE FIELDS</div>
+ <h1><span class="accent">Коробка за миллион.</span> Частная собственность.</h1>
+ <p>Крис купил дорогой компьютер. Каналье компьютер не нужен — ей нужна его коробка. Защитные поля <code>ShippingBox</code> недоступны напрямую, зато у упаковки есть публичный API. Получи коробку, не нарушив требований владельца.</p>
+</section>
+<main class="layout">
+ <div class="stack">
+  <section class="panel">
+   <div class="panel-head"><strong>LIVE SCENE / ДОСТАВКА</strong><span class="meta" id="phase">UNBOXING LOCKED</span></div>
+   <canvas class="scene" id="scene" width="960" height="540" role="img" aria-label="Пиксельная сцена: большой ящик с компьютером, рабочий стол и чёрная кошка Каналья."></canvas>
+   <div class="scene-status" id="scene-status" aria-live="polite">Крис: «Только не повреди компьютер и упаковку!»</div>
+  </section>
+  <section class="panel">
+   <div class="panel-head"><strong>MISSION OBJECTIVES</strong><span class="meta" id="score">0 / 3</span></div>
+   <div class="objectives">
+    <div class="obj" id="goal-desk"><span class="check">○</span><div><b>01. Подготовить рабочее место</b><p>Компьютер должен оказаться на свободном столе Криса.</p></div></div>
+    <div class="obj" id="goal-inspect"><span class="check">○</span><div><b>02. Осмотреть коробку</b><p>Узнай текущее состояние через публичный метод.</p></div></div>
+    <div class="obj" id="goal-code"><span class="check">○</span><div><b>03. Оформить коробку на Каналью</b><p>Компьютер цел, упаковка цела, владелец изменился. Все 12 тестов зелёные.</p></div></div>
+   </div>
+   <div class="controls"><button type="button" class="btn primary" id="desk-btn">01 · ОСВОБОДИТЬ СТОЛ</button><button type="button" class="btn mint" id="inspect-btn" disabled>02 · ОСМОТРЕТЬ ЯЩИК</button><button type="button" class="btn push" id="restart-btn">↺ СБРОС</button></div>
+   <div class="snapshot" id="snapshot"><b>box.inspect()</b> → доступно после осмотра.</div>
+  </section>
+ </div>
+ <div class="stack">
+  <section class="panel">
+   <div class="panel-head"><strong>CODE EDITOR</strong><span class="meta">Canalla.js ●</span></div>
+   <div class="editor-intro"><span class="pill">JAVASCRIPT</span>Изменяй только тело метода <code>claimBox()</code>. Приватные поля <code>#computer</code>, <code>#owner</code> и <code>#sealed</code> закрыты.</div>
+   <div class="codebox">
+    <div class="fixed-code"><em>// class Canalla extends Pet {</em>
+  claimBox(box, desk) {</div>
+    <textarea class="code" id="code" spellcheck="false" autocorrect="off" autocapitalize="off" autocomplete="off" aria-label="Тело метода claimBox">return box.transferOwnership(this);</textarea>
+    <div class="fixed-code">  }
+<em>// }</em></div>
+   </div>
+   <details class="api">
+     <summary>Публичные методы и ограничения коробки</summary>
+     <p><code>box.inspect()</code> возвращает снимок <code>{ sealed, hasComputer, intact, owner }</code>. Он не раскрывает приватные поля и сам компьютер.</p>
+     <p><code>box.open()</code> открывает неповреждённую коробку. <code>box.close()</code> закрывает её без повреждений.</p>
+     <p><code>box.unpackTo(desk)</code> переносит компьютер в пункт назначения, но только из открытой коробки. При неудаче компьютер остаётся внутри.</p>
+     <p><code>box.transferOwnership(this)</code> передаёт свободную открытую коробку питомцу. Крис разрешил забирать <strong>пустую</strong> упаковку. Чужую собственность он переоформлять не разрешал.</p>
+     <p><code>desk.canReceiveComputer()</code> проверяет наличие места на столе. Не полагайся на это обещание безусловно: перемещение тоже может завершиться неудачей.</p>
+     <p>Метод должен возвращать <code>true</code> при успехе, <code>false</code> при невозможности операции. Повторный вызов не должен переносить компьютер второй раз.</p>
+   </details>
+   <div class="editor-actions"><button type="button" class="btn primary" id="run-btn">▶ ЗАПУСТИТЬ ТЕСТЫ</button><button type="button" class="btn" id="hint-btn">ПОДСКАЗКА · 0/4</button></div>
+   <div class="hint" id="hint" hidden role="status"></div>
+  </section>
+  <section class="panel">
+   <div class="panel-head"><strong>TEST RUNNER</strong><span class="meta">12 ASSERTIONS</span></div>
+   <div class="terminal" id="terminal" role="log" aria-live="polite"><div class="line dim">CANALLA QA / READY</div><div class="line">&gt; Скрытые проверки появятся после первого запуска.</div></div>
+  </section>
+  <section class="panel">
+   <div class="panel-head"><strong>OBJECT EXPLORER</strong><span class="meta">STATE MACHINE</span></div>
+   <div class="tree" id="tree"></div>
+  </section>
+ </div>
+</main>
+<footer class="footer"><span>© CANALLA GAMES / РЕТРО БИТ / BUILD 0.3</span><span>КОД ИГРОКА ВЫПОЛНЯЕТСЯ В ИЗОЛИРОВАННОМ WORKER</span></footer>
+</div>
+<div class="overlay" id="win" hidden>
+ <div class="win" role="dialog" aria-modal="true" aria-labelledby="win-title">
+  <div class="label" id="achievement">TEST SUITE: ALL GREEN</div>
+  <h2 id="win-title">Компьютер — Крису. Коробка — Каналье.</h2>
+  <p>Чужие приватные поля не тронуты. Компьютер работает. Коробка перешла новому владельцу без единой царапины.</p>
+  <div class="quote"><b>Крис:</b> «Это упаковка от компьютера за несколько тысяч!»<br><b>Каналья:</b> «Тем более. Бесплатная недвижимость такого класса встречается редко».</div>
+  <div class="win-buttons"><button type="button" class="btn primary" id="replay-btn">↺ ЕЩЁ РАЗ</button><button type="button" class="btn" id="close-win">ПОСМОТРЕТЬ КОД</button><a class="btn" href="./index.html">← МЕНЮ</a></div>
+ </div>
+</div>
+<script>
+(()=>{
+"use strict";
+const byId=id=>document.getElementById(id), textarea=byId("code"), terminal=byId("terminal"), frame=document.createElement("iframe");
+const START="return box.transferOwnership(this);";
+const SOLUTION='const info = box.inspect();\nif (!info.intact) return false;\nif (!info.hasComputer && info.owner === this) return true;\nif (info.owner !== "Chris") return false;\nif (info.hasComputer) {\n  if (!desk || !desk.canReceiveComputer()) return false;\n}\nif (!box.open()) return false;\nif (info.hasComputer && !box.unpackTo(desk)) {\n  if (info.sealed) box.close();\n  return false;\n}\nreturn box.transferOwnership(this);';
+const state={desk:false,inspect:false,passed:false,hint:0,busy:false,frame:0};
+let ready=false,pending=null,deadline=null;
+function line(str,status=""){const d=document.createElement("div");d.className="line "+status;d.textContent=str;terminal.append(d);terminal.scrollTop=terminal.scrollHeight;}
+function clearLog(){terminal.replaceChildren();}
+function refresh(){
+const values=[state.desk,state.inspect,state.passed];
+["goal-desk","goal-inspect","goal-code"].forEach((id,i)=>{const node=byId(id);node.classList.toggle("done",values[i]);node.querySelector(".check").textContent=values[i]?"✓":"○";});
+byId("score").textContent=values.filter(Boolean).length+" / 3";
+byId("desk-btn").disabled=state.desk||state.busy;
+byId("inspect-btn").disabled=!state.desk||state.inspect||state.busy;
+byId("run-btn").disabled=state.busy;
+byId("phase").textContent=state.passed?"OWNER: CANALLA":state.inspect?"BOX INSPECTED":state.desk?"DESK: READY":"UNBOXING LOCKED";
+byId("scene-status").textContent=state.passed?"Крис получил целый компьютер. Каналья получила коробку. Контракт выполнен.":state.inspect?"Пломба цела, компьютер внутри, владелец — Крис. Действуй через API.":state.desk?"Стол свободен. Каналья изучает юридический статус коробки.":"Крис: «Только не повреди компьютер и упаковку!»";
+byId("tree").innerHTML='<span class="teal">ShippingBox</span> <span class="dim">// private state</span>\n'
+ +'├─ #computer: '+(state.passed?'[empty]':'[PC]')+'\n'
+ +'├─ #sealed: '+(state.passed?'false':'true')+'\n'
+ +'├─ #owner: '+(state.passed?'Canalla':'Chris')+'\n'
+ +'└─ #intact: true\n\n'
+ +'<span class="teal">Desk</span>\n'
+ +'└─ computer: '+(state.passed?'[PC]':'[empty]')+'\n\n'
+ +'<span class="teal">Canalla</span>\n'
+ +'└─ wants: [empty box]';
+}
+function reset(){
+if(deadline)clearTimeout(deadline);deadline=null;pending=null;
+state.desk=false;state.inspect=false;state.passed=false;state.hint=0;state.busy=false;textarea.value=START;
+byId("hint").hidden=true;byId("hint").replaceChildren();byId("hint-btn").textContent="ПОДСКАЗКА · 0/4";byId("win").hidden=true;
+byId("snapshot").innerHTML="<b>box.inspect()</b> → доступно после осмотра.";
+clearLog();line("CANALLA QA / READY","dim");line("> Тесты появятся после запуска. До этого изучи публичный контракт.");refresh();
+}
+byId("desk-btn").onclick=()=>{state.desk=true;line("✓ Стол Криса освобождён.","ok");refresh();};
+byId("inspect-btn").onclick=()=>{state.inspect=true;byId("snapshot").textContent='box.inspect() → { sealed: true, hasComputer: true, intact: true, owner: "Chris" }';line("✓ Осмотр: коробка запечатана, внутри PC, владелец Chris.","ok");refresh();};
+byId("restart-btn").onclick=reset;byId("replay-btn").onclick=()=>{reset();window.scrollTo({top:0,behavior:"smooth"});};byId("close-win").onclick=()=>byId("win").hidden=true;
+byId("win").addEventListener("click",ev=>{if(ev.target===byId("win"))byId("win").hidden=true;});
+document.addEventListener("keydown",ev=>{if((ev.ctrlKey||ev.metaKey)&&ev.key==="Enter"){ev.preventDefault();runTests();}if(ev.key==="Escape")byId("win").hidden=true;});
+textarea.addEventListener("keydown",ev=>{if(ev.key==="Tab"){ev.preventDefault();textarea.setRangeText("  ",textarea.selectionStart,textarea.selectionEnd,"end");}});
+const hints=[
+"У Канальи нет доступа к полям с #. Но ей не нужен сам компьютер — только право владеть пустой коробкой. Какие публичные операции меняют это состояние?",
+"Инкапсуляция защищает внутреннее состояние, но разрешает изменения через методы. Сначала проверь inspect(). Компьютеру потребуется безопасное место. Свободную коробку можно переоформить.",
+"Порядок: проверить состояние и владельца; если компьютер внутри — убедиться, что стол готов; открыть коробку; распаковать компьютер; передать право владения. Если распаковка не удалась, восстановить исходное состояние пломбы.",
+"Вот один из вариантов реализации. Можно вставить его целиком и изучить работу после запуска тестов."
+];
+byId("hint-btn").onclick=()=>{state.hint=Math.min(4,state.hint+1);const node=byId("hint");node.hidden=false;node.replaceChildren();const p=document.createElement("div");p.textContent=hints[state.hint-1];node.append(p);byId("hint-btn").textContent="ПОДСКАЗКА · "+state.hint+"/4";if(state.hint===4){const b=document.createElement("button");b.type="button";b.className="btn";b.textContent="ВСТАВИТЬ РЕШЕНИЕ";b.onclick=()=>{textarea.value=SOLUTION;textarea.focus();};node.append(b);}};
+function workerMain(){
+"use strict";
+self.onmessage=ev=>{
+ const {id,source,prepared,inspected}=ev.data,results=[];
+ function test(name,fn){let ok=false;try{ok=Boolean(fn());}catch(e){ok=false;}results.push({name,ok});}
+ try{
+ class Pet{constructor(name){this.name=name;}}
+ class Desk{
+  #device=null;#busy=false;
+  constructor(busy=false){this.#busy=busy;}
+  canReceiveComputer(){return !this.#busy&&this.#device===null;}
+  acceptComputer(item){if(!item||!this.canReceiveComputer())return false;this.#device=item;return true;}
+  contains(item){return this.#device===item;}
+  get deviceCount(){return this.#device?1:0;}
+ }
+ class ShippingBox{
+  #computer;#owner;#sealed;#intact;
+  constructor(computer,owner="Chris",damaged=false){this.#computer=computer;this.#owner=owner;this.#sealed=true;this.#intact=!damaged;}
+  inspect(){return Object.freeze({sealed:this.#sealed,hasComputer:this.#computer!==null,intact:this.#intact,owner:this.#owner});}
+  open(){if(!this.#intact)return false;this.#sealed=false;return true;}
+  close(){if(!this.#intact)return false;this.#sealed=true;return true;}
+  unpackTo(desk){if(this.#sealed||this.#computer===null||!desk||typeof desk.acceptComputer!=="function")return false;if(!desk.acceptComputer(this.#computer))return false;this.#computer=null;return true;}
+  transferOwnership(pet){if(this.#sealed||!this.#intact||this.#computer!==null||!(pet instanceof Pet))return false;if(this.#owner!=="Chris"&&this.#owner!==pet)return false;this.#owner=pet;return true;}
+ }
+ if(typeof source!=="string"||source.length>10000)throw Error("Код слишком длинный: максимум 10 000 символов.");
+ const Canalla=new Function("Pet","return class Canalla extends Pet {claimBox(box, desk) {"+source+"\n} }")(Pet);
+ test("Подготовлено безопасное место для компьютера",()=>prepared===true);
+ test("Исходная коробка осмотрена",()=>inspected===true);
+ const pc={serial:"RB-1984"},desk=new Desk(),box=new ShippingBox(pc),cat=new Canalla("Canalla");
+ const first=cat.claimBox(box,desk);
+ test("claimBox() сообщает об успешной операции",()=>first===true);
+ test("Оригинальный компьютер стоит на столе",()=>desk.contains(pc)&&desk.deviceCount===1);
+ test("Коробка пуста, цела и принадлежит Каналье",()=>{const s=box.inspect();return !s.hasComputer&&s.intact&&s.owner===cat&&!s.sealed;});
+ const twice=cat.claimBox(box,desk);
+ test("Повторный вызов не перемещает компьютер ещё раз",()=>twice===true&&desk.deviceCount===1&&box.inspect().owner===cat);
+ const busyPc={serial:"BUSY"},occupied=new Desk(true),busyBox=new ShippingBox(busyPc),secondCat=new Canalla("Canalla");
+ const busyOutcome=secondCat.claimBox(busyBox,occupied),busyState=busyBox.inspect();
+ test("Занятый стол оставляет коробку запечатанной",()=>busyOutcome===false&&busyState.sealed&&busyState.hasComputer&&busyState.owner==="Chris"&&busyState.intact&&occupied.deviceCount===0);
+ const emptyBox=new ShippingBox(null),emptyCat=new Canalla("Canalla"),emptyDesk=new Desk();
+ const emptyOutcome=emptyCat.claimBox(emptyBox,emptyDesk);
+ test("Пустую коробку можно оформить на Каналью",()=>emptyOutcome===true&&emptyBox.inspect().owner===emptyCat&&!emptyBox.inspect().sealed&&emptyDesk.deviceCount===0);
+ const ownedCat=new Canalla("Canalla"),claimed=new ShippingBox(null,ownedCat),claimedDesk=new Desk();
+ const claimedOutcome=ownedCat.claimBox(claimed,claimedDesk);
+ test("Уже полученная коробка обрабатывается без побочных эффектов",()=>claimedOutcome===true&&claimed.inspect().owner===ownedCat&&claimed.inspect().sealed&&claimedDesk.deviceCount===0);
+ const duke=new Pet("Duke"),otherBox=new ShippingBox(null,duke),interloper=new Canalla("Canalla");
+ const otherOutcome=interloper.claimBox(otherBox,new Desk());
+ test("Нельзя переоформить коробку другого питомца",()=>otherOutcome===false&&otherBox.inspect().owner===duke&&otherBox.inspect().sealed);
+ class BrokenDesk extends Desk{canReceiveComputer(){return true;}acceptComputer(){return false;}}
+ const brokenPc={serial:"FAIL"},brokenBox=new ShippingBox(brokenPc),brokenDesk=new BrokenDesk(),brokenCat=new Canalla("Canalla");
+ const brokenOutcome=brokenCat.claimBox(brokenBox,brokenDesk),brokenState=brokenBox.inspect();
+ test("При отказе распаковки сохраняются пломба и компьютер",()=>brokenOutcome===false&&brokenState.sealed&&brokenState.hasComputer&&brokenState.owner==="Chris"&&brokenState.intact&&brokenDesk.deviceCount===0);
+ const damaged=new ShippingBox(null,"Chris",true),damagedCat=new Canalla("Canalla");
+ const damagedOutcome=damagedCat.claimBox(damaged,new Desk());
+ test("Повреждённая коробка не выдаётся как неповреждённая",()=>damagedOutcome===false&&damaged.inspect().owner==="Chris"&&!damaged.inspect().intact);
+ self.postMessage({kind:"third-worker-result",id,tests:results});
+ }catch(e){self.postMessage({kind:"third-worker-result",id,tests:[],error:String(e&&e.message||e).slice(0,230)});}
+};
+}
+function iframeMain(script){
+let active=null;
+window.parent.postMessage({kind:"third-ready"},"*");
+window.addEventListener("message",ev=>{
+ if(ev.source!==window.parent||!ev.data||ev.data.kind!=="third-run")return;
+ const {id,source,prepared,inspected}=ev.data;
+ if(typeof id!=="string"||typeof source!=="string"||source.length>10000){window.parent.postMessage({kind:"third-result",id,error:"Слишком длинный код.",tests:[]},"*");return;}
+ if(active)active.terminate();
+ try{
+  const url=URL.createObjectURL(new Blob([script],{type:"text/javascript"}));
+  const w=new Worker(url);URL.revokeObjectURL(url);active=w;
+  w.onmessage=message=>{if(w!==active||!message.data||message.data.id!==id)return;window.parent.postMessage({kind:"third-result",id,error:message.data.error||null,tests:message.data.tests},"*");w.terminate();active=null;};
+  w.onerror=error=>{if(w!==active)return;window.parent.postMessage({kind:"third-result",id,error:"Песочница: "+error.message,tests:[]},"*");w.terminate();active=null;};
+  w.postMessage({id,source,prepared:!!prepared,inspected:!!inspected});
+  setTimeout(()=>{if(w===active){w.terminate();active=null;window.parent.postMessage({kind:"third-result",id,error:"Превышено время выполнения кода (3 секунды).",tests:[]},"*");}},3000);
+ }catch(e){window.parent.postMessage({kind:"third-result",id,error:String(e),tests:[]},"*");}
+});
+}
+frame.hidden=true;frame.title="Изолированный исполнитель JavaScript";frame.sandbox="allow-scripts";
+frame.srcdoc='<!doctype html><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; script-src &#39;unsafe-inline&#39; &#39;unsafe-eval&#39; blob:; worker-src blob:; connect-src &#39;none&#39;;"><scr'+'ipt>('+iframeMain.toString()+')('+JSON.stringify('('+workerMain.toString()+')()')+')<\/scr'+'ipt>';
+window.addEventListener("message",ev=>{
+ if(ev.source!==frame.contentWindow||!ev.data)return;
+ if(ev.data.kind==="third-ready"){ready=true;return;}
+ if(ev.data.kind==="third-result"&&ev.data.id===pending)finish(ev.data);
+});
+document.body.append(frame);
+frame.addEventListener("load",()=>ready=true);
+function finish(data){
+ if(!state.busy)return;
+ if(deadline)clearTimeout(deadline);deadline=null;pending=null;state.busy=false;
+ clearLog();line("CANALLA QA / TEST RUNNER","dim");
+ if(data.error)line("✕ "+data.error,"fail");
+ const tests=Array.isArray(data.tests)?data.tests:[];
+ for(const t of tests)line((t.ok?"✓ ":"✕ ")+String(t.name).slice(0,140),t.ok?"ok":"fail");
+ state.passed=!data.error&&tests.length===12&&tests.every(t=>t.ok);
+ if(state.passed){
+  line("> TESTS PASSED: 12/12","ok");line("> Ownership transferred. Warranty unchanged.","ok");
+  byId("achievement").textContent=state.hint===0?"12/12 · ДОСТИЖЕНИЕ: БЕЗ ПОДСКАЗОК":"TEST SUITE: ALL GREEN / 12 OF 12";
+  setTimeout(()=>{byId("win").hidden=false;byId("close-win").focus();},450);
+ }else line("> Инварианты не соблюдены. Посмотри, какой тест упал.","warn");
+ refresh();
+}
+function runTests(){
+ if(state.busy)return;
+ if(!ready){line("> Исполнитель ещё загружается. Попробуй повторить запуск.","warn");return;}
+ state.busy=true;state.passed=false;refresh();clearLog();line("CANALLA QA / RUNNING","dim");line("> Проверяю реальные состояния объектов...");
+ pending=String(Date.now())+"-"+Math.random();
+ deadline=setTimeout(()=>finish({error:"Тесты не ответили за 3.5 секунды.",tests:[]}),3500);
+ frame.contentWindow.postMessage({kind:"third-run",id:pending,source:textarea.value,prepared:state.desk,inspected:state.inspect},"*");
+}
+byId("run-btn").onclick=runTests;
+const canvas=byId("scene"),ctx=canvas.getContext("2d");
+function px(x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(x|0,y|0,w|0,h|0);}
+function tx(text,x,y,size=20,color="#234353"){ctx.fillStyle=color;ctx.font="900 "+size+"px monospace";ctx.fillText(text,x,y);}
+function drawCat(x,y,t){
+ const bob=Math.round(Math.sin(t/34)*2);y+=bob;
+ px(x-22,y+90,31,16,"#1e2530");px(x-32,y+70,21,26,"#252e3b");
+ px(x+18,y+54,134,91,"#1d242e");px(x+30,y+71,125,80,"#2d3542");px(x+37,y+139,24,47,"#19222c");px(x+113,y+139,25,47,"#19222c");
+ px(x+78,y+10,89,93,"#202733");px(x+70,y+13,22,37,"#202733");px(x+147,y+11,21,40,"#202733");
+ px(x+83,y+19,11,21,"#a9768a");px(x+152,y+18,9,22,"#a9768a");
+ px(x+93,y+53,17,20,"#d4e68e");px(x+135,y+53,17,20,"#d4e68e");
+ px(x+101,y+59,5,13,"#1b2730");px(x+144,y+59,5,13,"#1b2730");
+ px(x+118,y+82,13,9,"#af8190");px(x+78,y+84,38,3,"#9fb3b2");px(x+132,y+84,37,3,"#9fb3b2");
+}
+function draw(){
+ state.frame++;
+ ctx.imageSmoothingEnabled=false;
+ px(0,0,960,540,"#b0d0be");px(0,0,960,92,"#83b5a8");
+ px(0,379,960,161,"#b99475");px(0,377,960,9,"#718e82");
+ for(let i=0;i<960;i+=70)px(i,380,3,160,"#a87e62");
+ px(32,94,338,258,"#597f84");px(42,104,318,239,"#97b9af");px(49,114,303,227,"#e1d4ba");
+ px(58,315,290,11,"#9fa2a0");
+ px(442,170,435,25,"#795747");px(462,191,25,240,"#74523f");px(832,191,25,240,"#74523f");
+ px(510,153,265,20,"#f1e5cd");
+ if(state.desk){
+  if(state.passed){
+   px(575,39,174,112,"#223447");px(585,50,154,88,"#0f2537");px(593,62,132,64,"#4e938e");tx("PC / OK",609,104,20,"#d9f1a9");px(650,150,18,26,"#354f5b");px(621,169,73,9,"#314650");
+  } else {px(577,126,169,9,"#9cafaa");tx("DESK: READY",558,99,19,"#3e6b68");}
+ }else{px(580,104,130,38,"#7f9b96");px(595,97,105,11,"#d4dbd0");tx("BUSY",612,132,20,"#e3e6cc");}
+ const bx=113,by=178;
+ if(!state.passed){
+  px(bx,by+23,246,203,"#ae8051");px(bx+11,by+33,224,176,"#c69a63");px(bx+26,by+46,193,149,"#d9ad74");px(bx+106,by+25,18,191,"#ba8651");px(bx+8,by+23,237,18,"#9c734c");px(bx+47,by+93,140,57,"#e7cb98");tx("FRAGILE",bx+63,by+115,24,"#714f33");tx("PC INSIDE",bx+57,by+141,15,"#6d513d");
+  px(bx-12,by+6,272,34,"#e0b77c");px(bx,by-5,247,24,"#d5a56c");px(bx+81,by-5,22,42,"#efcf96");
+ }else{
+  px(bx,by+82,248,144,"#aa7649");px(bx+12,by+90,222,125,"#d6a46d");px(bx+14,by+110,220,101,"#f0ce9a");
+  px(bx-30,by+30,278,48,"#ba8a54");px(bx+235,by+45,87,32,"#cea066");tx("CLAIMED",bx+60,by+161,24,"#6b5035");
+ }
+ drawCat(state.passed?265:377,state.passed?238:290,state.frame);
+ px(27,463,520,52,"#243e4c");tx(state.passed?"BOX.OWNER = CANALLA":"BOX.OWNER = CHRIS",42,497,21,"#e4efa6");
+ px(595,463,331,52,"#243e4c");tx(state.passed?"COMPUTER: SAFE":"COMPUTER: BOX",610,497,19,state.passed?"#d5eea2":"#f4ca86");
+ requestAnimationFrame(draw);
+}
+reset();requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
