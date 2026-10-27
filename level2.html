@@ -26,6 +26,7 @@
  <div class="stack">
   <section class="panel">
    <div class="panel-head"><b>GAME SCENE / КУХНЯ</b><span class="small" id="phase">STANDBY</span></div>
+   <div class="controls"><button class="btn lime" id="post-btn">01 · ДЮКЕ НА ПОСТ</button><button class="btn mint" id="order-btn" disabled>02 · КОМАНДА ВСЕМ</button><button class="btn push" id="reset-btn">↺ СБРОС</button></div>
    <canvas id="scene" width="900" height="470" role="img" aria-label="Пиксельная сцена: Дюке, Каналья, тарелка с печеньем."></canvas>
    <div class="scene-status" id="scene-status" aria-live="polite">Дюке ждёт приказа. Каналья уже разработала план.</div>
   </section>
@@ -36,12 +37,12 @@
      <div class="objective" id="obj-order"><span class="check">○</span><div><strong>02. Разослать команду guard</strong><p>Оба питомца получают одинаковую команду через общий интерфейс.</p></div></div>
      <div class="objective" id="obj-pass"><span class="check">○</span><div><strong>03. Сохранить все контракты</strong><p>Дюке охраняет тарелку. Каналья получила одну уточку, сохранив ожидаемое поведение остальных команд.</p></div></div>
    </div>
-   <div class="controls"><button class="btn lime" id="post-btn">01 · ДЮКЕ НА ПОСТ</button><button class="btn mint" id="order-btn" disabled>02 · КОМАНДА ВСЕМ</button><button class="btn push" id="reset-btn">↺ СБРОС</button></div>
+
   </section>
  </div>
  <div class="stack">
   <section class="panel">
-   <div class="panel-head"><b>CODE EDITOR</b><span class="small">Canalla.js ●</span></div>
+   <div class="panel-head"><b>ШАГ 03 · CODE EDITOR</b><span class="small">Canalla.js ●</span></div>
    <div class="padded intro"><span class="pill">JAVASCRIPT</span>Переопредели только тело метода <code>Canalla.perform()</code>. Остальные классы менять нельзя.</div>
    <div class="codebox">
      <div class="context"><span class="muted">// class Canalla extends Pet {</span>
@@ -56,11 +57,11 @@
      <p><code>station.assign(pet)</code> регистрирует охранника; <code>station.isGuard(pet)</code> проверяет регистрацию; <code>station.takeCookie(pet)</code> выдаёт одну уточку зарегистрированному охраннику, если печенье осталось. За смену один питомец может получить не больше одной.</p>
      <p>Состояние: <code>station.cookies</code> — количество уточек, <code>this.pocket</code> — сколько получила Каналья.</p>
    </details>
-   <div class="buttons"><button class="btn lime" id="run-btn">▶ ЗАПУСТИТЬ ТЕСТЫ</button><button class="btn" id="hint-btn">Подсказка · 0/4</button></div>
+   <div class="buttons"><button class="btn lime" id="run-btn" disabled title="Сначала поставь Дюке на пост и отправь команду">▶ 04 · ЗАПУСТИТЬ ТЕСТЫ</button><button class="btn" id="hint-btn">Подсказка · 0/4</button></div>
    <div id="hint" class="hintbox" hidden aria-live="polite"></div>
   </section>
   <section class="panel">
-   <div class="panel-head"><b>TEST RUNNER</b><span class="small">QA / 10 ASSERTIONS</span></div>
+   <div class="panel-head"><b>ШАГ 04 · TEST RUNNER</b><span class="small">QA / 10 ASSERTIONS</span></div>
    <div class="terminal" id="terminal" role="log" aria-live="polite"><div class="log dim">CANALLA QA / READY</div><div class="log"> &gt; Дюке считает, что должностная инструкция на его стороне.</div></div>
   </section>
   <section class="panel">
@@ -95,7 +96,7 @@ function refresh(){
   byId('counter').textContent=flags.filter(Boolean).length+' / 3';
   byId('post-btn').disabled=state.post||state.busy;
   byId('order-btn').disabled=!state.post||state.order||state.busy;
-  byId('run-btn').disabled=state.busy;
+  byId('run-btn').disabled=state.busy || !state.order;
   byId('phase').textContent=state.passed?'CONTRACT: OK':state.order?'COMMAND DISPATCHED':state.post?'GUARD ACTIVE':'STANDBY';
   byId('scene-status').textContent=state.passed?'Дюке на посту. Одно печенье пропало. Формально претензий нет.':state.order?'Одинаковая команда доставлена обоим питомцам. Что вернёт Каналья?':state.post?'Дюке занял позицию у тарелки. Теперь отправь команду всем.':'Дюке ждёт приказа. Каналья уже разработала план.';
   byId('tree').innerHTML='<span class="accent">Pet</span> <span class="muted">// базовый класс</span>\n├── Duke extends Pet '+(state.post?'✓ guard':'○ wait')+'\n└── Canalla extends Pet '+(state.passed?'✓ guard / +1 cookie':'○ неизвестное поведение')+'\n\n<span class="accent">Station</span>\n├── guards: '+(state.passed?'[Duke, Canalla]':state.post?'[Duke]':'[]')+'\n├── cookies: '+(state.passed?'2':'3')+'\n└── Canalla.pocket: '+(state.passed?'1':'0');
@@ -110,7 +111,7 @@ const hints=[
 'Алгоритм: для guard зарегистрируй this через station.assign(this), получи одну уточку через station.takeCookie(this), верни строку "guarding". Для всех прочих команд делегируй родителю.',
 'Готовая реализация доступна ниже. Можно вставить её, чтобы пройти уровень и посмотреть результат.'
 ];
-byId('hint-btn').onclick=()=>{if(state.hints<4)state.hints++;const h=byId('hint');h.hidden=false;h.replaceChildren();const p=document.createElement('div');p.textContent=hints[state.hints-1];h.append(p);byId('hint-btn').textContent='Подсказка · '+state.hints+'/4';if(state.hints===4){const b=document.createElement('button');b.className='btn';b.textContent='ВСТАВИТЬ ПРИМЕР';b.onclick=()=>{code.value=solution;code.focus()};h.append(b);}};
+byId('hint-btn').onclick=()=>{if(state.hints<4)state.hints++;const h=byId('hint');h.hidden=false;h.replaceChildren();const p=document.createElement('div');p.textContent=hints[state.hints-1];h.append(p);byId('hint-btn').textContent='Подсказка · '+state.hints+'/4';if(state.hints===4){const b=document.createElement('button');b.className='btn';b.textContent='ВСТАВИТЬ РЕШЕНИЕ';b.onclick=()=>{code.value=solution;code.focus()};h.append(b);}};
 code.addEventListener('keydown',ev=>{if(ev.key==='Tab'){ev.preventDefault();code.setRangeText('  ',code.selectionStart,code.selectionEnd,'end');}});
 document.addEventListener('keydown',ev=>{if((ev.ctrlKey||ev.metaKey)&&ev.key==='Enter'){ev.preventDefault();runTests();}if(ev.key==='Escape')byId('win').hidden=true;});
 function workerLogic(){
@@ -199,6 +200,7 @@ refresh();
 }
 function runTests(){
 if(state.busy)return;
+if(!state.order){log('> Сначала выполни действия 01 и 02.','warn');return;}
 if(!runnerReady){log('> Песочница ещё загружается. Повтори запуск.','warn');return;}
 state.passed=false;state.busy=true;refresh();clearLog();log('CANALLA QA / RUNNING','dim');log('> Проверяю виртуальный вызов perform()...');
 pending=String(Date.now())+'-'+Math.random();
@@ -209,7 +211,40 @@ byId('run-btn').onclick=runTests;
 const cv=byId('scene'),c=cv.getContext('2d');
 function block(x,y,w,h,color){c.fillStyle=color;c.fillRect(x|0,y|0,w|0,h|0);}
 function label(t,x,y,size=18,color='#183241'){c.fillStyle=color;c.font='bold '+size+'px monospace';c.fillText(t,x,y);}
-function dog(x,y,t){block(x,y+30,115,64,'#ae7446');block(x+69,y+5,68,72,'#bc8656');block(x+112,y+30,26,32,'#a96f42');block(x+84,y+17,35,26,'#dca476');block(x+92,y+35,8,9,'#202331');block(x+133,y+54,16,10,'#493526');block(x+5,y+92,18,38,'#94643f');block(x+91,y+92,20,38,'#94643f');block(x+2,y+21,23,20,'#ae7446');block(x+140,y+22,18,16,'#aa7445');if(state.post){block(x+82,y+17,35,6,'#d9f17e');label('!',x+112,y-4,23,'#f7c97b');}}
+function dog(x,y,t){
+  // Дюке: поднятая голова, длинная шея, четыре лапы и бирюзовый ошейник.
+  const brow=Math.round(Math.sin(t/40)*1);
+  // tail (behind body)
+  block(x-22,y+64,18,13,'#a66c43');
+  block(x-26,y+44,16,23,'#bc8458');
+  block(x-18,y+37,10,12,'#ba8154');
+  // body and chest: side view, facing right
+  block(x+0,y+56,133,67,'#99643e');
+  block(x+8,y+52,123,63,'#b77b4b');
+  block(x+15,y+64,105,47,'#c18b58');
+  block(x+107,y+44,32,79,'#b77b4b');
+  // hind and front paws
+  block(x+13,y+109,24,27,'#976039');block(x+12,y+130,30,9,'#8c5636');
+  block(x+56,y+110,17,26,'#aa6e41');block(x+54,y+131,24,8,'#8c5636');
+  block(x+104,y+110,22,28,'#976039');block(x+102,y+132,28,8,'#8c5636');
+  // upright neck and square raised head
+  block(x+111,y+14,34,86,'#aa7146');
+  block(x+112,y-24+brow,72,79,'#b87a4a');
+  block(x+118,y-21+brow,62,71,'#c38b59');
+  block(x+117,y-31+brow,19,44,'#815236'); // upright ear
+  block(x+118,y-26+brow,10,23,'#9c6742');
+  block(x+166,y-18+brow,14,33,'#956038'); // other ear
+  block(x+142,y+17+brow,47,30,'#d49e6b'); // muzzle
+  block(x+183,y+27+brow,18,16,'#b77b4b');
+  block(x+193,y+27+brow,12,11,'#43342c'); // nose
+  block(x+152,y+6+brow,9,9,'#21252d'); // eye
+  block(x+155,y+6+brow,3,3,'#f2dfb9');
+  block(x+169,y+43+brow,18,3,'#745036'); // mouth
+  // Collar distinct at raised neck, not across forehead
+  block(x+111,y+49,38,9,'#73d5bc');
+  block(x+119,y+56,13,8,'#51a997');
+  if(state.post)label('!',x+182,y-42,27,'#f7c97b');
+}
 function cat(x,y,t){block(x+20,y+40,97,55,'#202630');block(x+71,y+2,69,73,'#303947');block(x+70,y+4,27,26,'#303947');block(x+119,y+4,22,25,'#303947');block(x+79,y+7,14,15,'#ac788f');block(x+125,y+6,9,17,'#ac788f');block(x+90,y+36,7,11,'#cce29a');block(x+118,y+36,7,11,'#cce29a');block(x+93,y+39,3,7,'#151c25');block(x+121,y+39,3,7,'#151c25');block(x+107,y+53,9,7,'#b47c8b');block(x+23,y+87,16,40,'#202630');block(x+96,y+88,16,40,'#202630');block(x,y+52,25,15,'#202630');block(x,y+42,13,12,'#202630');block(x+50,y+38,15,8,'#1b222e');}
 function draw(){
 state.frame++;
