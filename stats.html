@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101826">
+<meta name="description" content="CANALLA.EXE — статистика появится в будущих обновлениях">
+<title>CANALLA.EXE / STATS — Coming Soon</title>
+<style>
+:root{--bg:#0d1523;--p:#152439;--line:#3a5368;--lime:#daef7b;--teal:#83dec8;--text:#ecf3ed;--muted:#92aabb;--mono:ui-monospace,Consolas,monospace}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 66% 15%,#203e49,transparent 48%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif;display:flex;flex-direction:column}a{color:inherit;text-decoration:none}
+.wrap{width:min(1100px,calc(100% - 38px));margin:auto}.top{height:85px;display:flex;justify-content:space-between;gap:16px;align-items:center;border-bottom:1px solid var(--line)}
+.logo{font:900 clamp(18px,3vw,25px) var(--mono);letter-spacing:-1.5px}.logo span{color:var(--lime)}.back{border:1px solid #4d6979;border-radius:5px;padding:11px 15px;font:800 12px var(--mono)}.back:hover{border-color:var(--teal)}
+.content{padding:80px 0 95px;flex:1;display:grid;grid-template-columns:1.25fr .75fr;align-items:center;gap:45px}.kicker{font:800 12px var(--mono);color:var(--teal);letter-spacing:2px}.title{font-size:clamp(55px,9vw,130px);line-height:.92;margin:22px 0;letter-spacing:-6px;font-weight:950}.title span{color:var(--lime)}.body{max-width:550px;font-size:17px;line-height:1.7;color:#adbecc}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}.btn{background:var(--lime);color:#122137;padding:15px 24px;border-radius:5px;font:900 13px var(--mono);transition:transform .15s}.btn:hover{transform:translateY(-2px)}.btn.outline{background:transparent;border:1px solid #68808b;color:var(--text)}
+.terminal{border:1px solid #38576b;border-radius:12px;background:#0b1827;box-shadow:14px 14px 0 #06101a8c;transform:rotate(1.4deg);overflow:hidden}.head{background:#193247;padding:12px 18px;border-bottom:1px solid #345168;font:800 12px var(--mono);color:var(--teal)}.screen{padding:27px 22px;min-height:310px;font:14px/2.15 var(--mono)}.dim{color:#688699}.green{color:var(--lime)}.cursor{background:var(--lime);height:17px;width:9px;display:inline-block;vertical-align:middle;animation:blink 1s steps(2,end) infinite}@keyframes blink{50%{opacity:0}}
+.foot{padding:20px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:14px;color:#8299ac;font:11px var(--mono)}
+@media(max-width:760px){.content{grid-template-columns:1fr;padding:55px 0 70px;gap:50px}.title{letter-spacing:-3px}.terminal{transform:none}.top{height:75px}.foot{flex-direction:column}.body{font-size:15px}}
+@media(prefers-reduced-motion:reduce){.cursor{animation:none}.btn{transition:none}}
+</style></head>
+<body>
+<div class="wrap"><header class="top"><a class="logo" href="./index.html">CANALLA<span>.EXE</span></a><a class="back" href="./index.html">← ГЛАВНОЕ МЕНЮ</a></header></div>
+<main class="content wrap">
+<section><div class="kicker">FEATURE LOCKED / BUILD 0.2</div><h1 class="title">STATS<span>.</span></h1><div class="kicker">COMING SOON _</div>
+<p class="body">Здесь появятся результаты пройденных уровней, количество запущенных тестов, достижения и прохождения без подсказок. Пока статистика ещё не ведётся — не будем рисовать вымышленные цифры.</p>
+<div class="actions"><a class="btn" href="./index.html">← В МЕНЮ</a><a class="btn outline" href="./level1.html">▶ ИГРАТЬ</a></div></section>
+<div class="terminal" aria-label="Предварительный вид статистики"><div class="head">▣ CANALLA_STATISTICS.LOG</div>
+<div class="screen"><div class="dim">&gt; connecting to stats module ...</div><div class="dim">&gt; profile: NOT INITIALIZED</div><div class="dim">&gt; achievements: LOCKED</div><div class="dim">&gt; save slot: COMING SOON</div><div style="margin-top:35px" class="green">&gt; STATUS: UNDER CONSTRUCTION</div><div class="dim">&gt; Каналья: «Статистика? Я и так всегда права».</div><div class="green">&gt; <span class="cursor"></span></div></div>
+</div>
+</main><footer class="foot wrap"><span>RETRO BIT UNIVERSE / CANALLA.EXE</span><span>STATS MODULE // OFFLINE</span></footer>
+</body></html>
